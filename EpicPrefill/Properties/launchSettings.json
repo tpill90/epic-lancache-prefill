@@ -1,0 +1,40 @@
+{
+  "profiles": {
+    "Prefill - All": {
+      "commandName": "Project",
+      "commandLineArgs": "prefill --all --verbose --force"
+    },
+    "Prefill - All - No Download": {
+      "commandName": "Project",
+      "commandLineArgs": "prefill --all --verbose --no-download --force"
+    },
+    "Prefill - All - No Download - No cache": {
+      "commandName": "Project",
+      "commandLineArgs": "prefill --all --verbose --no-download --nocache --force"
+    },
+    "Prefill - App with DLC": {
+      "commandName": "Project",
+      "commandLineArgs": "prefill --app Catnip --verbose --force"
+    },
+    "Prefill - Fortnite": {
+      "commandName": "Project",
+      "commandLineArgs": "prefill --app Fortnite --verbose --force"
+    },
+    "Prefill - Json Manifest": {
+      "commandName": "Project",
+      "commandLineArgs": "prefill --app d2da64bd4c4e422da4b1a88041492a3a --verbose --force"
+    },
+    "Prefill - Selected": {
+      "commandName": "Project",
+      "commandLineArgs": "prefill --verbose --force"
+    },
+    "Select Apps": {
+      "commandName": "Project",
+      "commandLineArgs": "select-apps"
+    },
+    "Clear cache": {
+      "commandName": "Project",
+      "commandLineArgs": "clear-cache"
+    }
+  }
+}

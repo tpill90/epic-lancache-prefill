@@ -1,0 +1,13 @@
+bin
+obj
+/publish
+.vs
+*.ak
+lockfile
+/EpicPrefill/EpicPrefill.csproj.user
+/EpicPrefill.sln.DotSettings.user
+/docs/site
+*.log
+*.user
+EpicPrefill/Properties/PublishProfiles/FolderProfile.pubxml
+/Benchmarks/BenchmarkDotNet.Artifacts/results

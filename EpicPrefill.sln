@@ -1,0 +1,62 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.2.32516.85
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".Solution Items", ".Solution Items", "{78A93A29-C93D-4B62-AB36-1845BB4E797C}"
+	ProjectSection(SolutionItems) = preProject
+		README.md = README.md
+	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LancachePrefill.Common", "LancachePrefill.Common\LancachePrefill.Common.csproj", "{D983EC87-5052-4E88-8891-23EE47A5FF9A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".github", ".github", "{964C7C38-DF8F-4D47-AFD0-30B670EFA4AB}"
+	ProjectSection(SolutionItems) = preProject
+		.github\workflows\build-and-test.yml = .github\workflows\build-and-test.yml
+		.github\workflows\deploy-documentation.yml = .github\workflows\deploy-documentation.yml
+		.github\workflows\release-publish.yml = .github\workflows\release-publish.yml
+	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EpicPrefill", "EpicPrefill\EpicPrefill.csproj", "{C9891AEF-F9A1-4D6C-9F48-AAB0B054EE81}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EpicPrefill.Test", "EpicPrefill.Test\EpicPrefill.Test.csproj", "{05CF8491-58C9-4DAD-A0EA-C96E16CB40FC}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Benchmarks", "Benchmarks\Benchmarks.csproj", "{3467CD6C-B4F2-4EE5-9872-407C2985C457}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Testing", "Testing", "{D40480CD-E51C-48F5-B1C5-938420D33C3A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D983EC87-5052-4E88-8891-23EE47A5FF9A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D983EC87-5052-4E88-8891-23EE47A5FF9A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D983EC87-5052-4E88-8891-23EE47A5FF9A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D983EC87-5052-4E88-8891-23EE47A5FF9A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C9891AEF-F9A1-4D6C-9F48-AAB0B054EE81}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C9891AEF-F9A1-4D6C-9F48-AAB0B054EE81}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C9891AEF-F9A1-4D6C-9F48-AAB0B054EE81}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C9891AEF-F9A1-4D6C-9F48-AAB0B054EE81}.Release|Any CPU.Build.0 = Release|Any CPU
+		{05CF8491-58C9-4DAD-A0EA-C96E16CB40FC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{05CF8491-58C9-4DAD-A0EA-C96E16CB40FC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{05CF8491-58C9-4DAD-A0EA-C96E16CB40FC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{05CF8491-58C9-4DAD-A0EA-C96E16CB40FC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3467CD6C-B4F2-4EE5-9872-407C2985C457}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3467CD6C-B4F2-4EE5-9872-407C2985C457}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3467CD6C-B4F2-4EE5-9872-407C2985C457}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3467CD6C-B4F2-4EE5-9872-407C2985C457}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{964C7C38-DF8F-4D47-AFD0-30B670EFA4AB} = {78A93A29-C93D-4B62-AB36-1845BB4E797C}
+		{05CF8491-58C9-4DAD-A0EA-C96E16CB40FC} = {D40480CD-E51C-48F5-B1C5-938420D33C3A}
+		{3467CD6C-B4F2-4EE5-9872-407C2985C457} = {D40480CD-E51C-48F5-B1C5-938420D33C3A}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {4D4A514B-B97D-444E-84A5-16D52615DBF3}
+	EndGlobalSection
+EndGlobal

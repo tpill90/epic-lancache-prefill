@@ -1,0 +1,91 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <RuntimeIdentifiers>win-x64;linux-x64;linux-arm64;osx-x64</RuntimeIdentifiers>
+    <OutputType>Exe</OutputType>
+
+    <AssemblyName>EpicPrefill</AssemblyName>
+    <RootNamespace>EpicPrefill</RootNamespace>
+    <VersionPrefix>0.0.1</VersionPrefix>
+    <Authors>tpill90</Authors>
+
+    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+
+    <!-- Code analysis settings -->
+    <EnableNETAnalyzers>true</EnableNETAnalyzers>
+    <Features>strict</Features>
+    <AnalysisLevel>latest</AnalysisLevel>
+    <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+    <AnalysisMode>AllEnabledByDefault</AnalysisMode>
+
+    <EnableTrimAnalyzer>true</EnableTrimAnalyzer>
+
+    <!-- Required to be enabled in order to run this application on Ubuntu Docker images. -->
+    <InvariantGlobalization>true</InvariantGlobalization>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DebugType>none</DebugType>
+    <DebugSymbols>false</DebugSymbols>
+  </PropertyGroup>
+
+  <!-- Includes Linux update script in publish package -->
+  <ItemGroup Condition="'$(RuntimeIdentifier)'=='linux-x64'">
+    <Content Include="..\scripts\**\update.sh">
+      <Link>%(RecursiveDir)%(Filename)%(Extension)</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <!-- Includes Windows update script in publish package -->
+  <ItemGroup Condition="'$(RuntimeIdentifier)'=='win-x64'">
+    <Content Include="..\scripts\**\update.ps1">
+      <Link>%(RecursiveDir)%(Filename)%(Extension)</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- External Packages -->
+    <PackageReference Include="ByteSize" Version="2.1.1" />
+    <PackageReference Include="CliFx" Version="2.3.0" />
+    <PackageReference Include="HexMate" Version="0.0.3" />
+    <PackageReference Include="Microsoft.AspNetCore.WebUtilities" Version="2.2.0" />
+    <PackageReference Include="Terminal.Gui" Version="1.7.2" />
+
+    <!-- Custom Spectre.Console build -->
+    <Reference Include="Spectre.Console">
+      <HintPath>..\lib\Spectre.Console.dll</HintPath>
+    </Reference>
+
+    <!-- Debugging Packages -->
+    <PackageReference Include="JetBrains.Annotations" Version="2022.1.0" />
+
+    <!-- Analyzers -->
+    <PackageReference Include="AsyncFixer" Version="1.6.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="ErrorProne.NET.Structs" Version="0.1.2">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.CodeAnalysis.NetAnalyzers" Version="6.0.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.VisualStudio.Threading.Analyzers" Version="16.9.60">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Spectre.Console.Analyzer" Version="0.44.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\LancachePrefill.Common\LancachePrefill.Common.csproj" />
+  </ItemGroup>
+
+</Project>
