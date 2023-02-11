@@ -55,7 +55,7 @@
 
     <!-- Custom Spectre.Console build -->
     <Reference Include="Spectre.Console">
-      <HintPath>..\lib\Spectre.Console.dll</HintPath>
+      <HintPath>..\LancachePrefill.Common\lib\Spectre.Console.dll</HintPath>
     </Reference>
 
     <!-- Debugging Packages -->

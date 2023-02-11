@@ -30,7 +30,6 @@ Automatically fills a [Lancache](https://lancache.net/) with games from Steam, s
 
 # Initial Setup
 
-> **Note**
 1.  **EpicPrefill** can be run on both the Lancache server itself,  or on your gaming machine as an alternative Steam client.  You should decide which one works better for your use case.
 2.  Download the latest version for your OS from the [Releases](https://github.com/tpill90/epic-lancache-prefill/releases) page.
 3.  Unzip to a directory of your choice
