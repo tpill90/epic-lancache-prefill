@@ -3,8 +3,7 @@
 [![](https://dcbadge.vercel.app/api/server/BKnBS4u?style=for-the-badge)](https://discord.com/invite/BKnBS4u)
 [![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/Y8Y5DWGZN)
 
-![GitHub all releases](https://img.shields.io/github/downloads/tpill90/steam-lancache-prefill/total?color=red&style=for-the-badge)
-[![dockerhub](https://img.shields.io/docker/pulls/tpill90/steam-lancache-prefill?color=9af&style=for-the-badge)](https://hub.docker.com/r/tpill90/epic-lancache-prefill)
+![GitHub all releases](https://img.shields.io/github/downloads/tpill90/epic-lancache-prefill/total?color=red&style=for-the-badge)
 
 
 Automatically fills a [Lancache](https://lancache.net/) with games from Steam, so that subsequent downloads for the same content will be served from the Lancache, improving speeds and reducing load on your internet connection.

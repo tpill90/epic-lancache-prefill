@@ -1,0 +1,69 @@
+name: release-publish
+run-name: "Publish Release"
+
+on:
+  push:
+    tags:
+      - '*'
+
+env:
+  # Used to parameterize these build scripts between LancachePrefill projects
+  PROJECT_NAME: EpicPrefill
+
+permissions:
+  contents: write # Required to create a release
+
+jobs:
+  dotnet-publish:
+    runs-on: ubuntu-latest
+    container: mcr.microsoft.com/dotnet/sdk:6.0
+    strategy:
+      matrix:
+        runtime: ['win-x64', 'linux-x64', 'linux-arm64', 'osx-x64']
+      fail-fast: false
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        submodules: true
+    # Gets the executable version that will be used later in the uploaded zip file name
+    - name: Set Version
+      id: vars
+      run: |
+        version=$(grep -Po '(?<=<VersionPrefix>)(.*?)(?=</VersionPrefix>)' $PROJECT_NAME/$PROJECT_NAME.csproj); 
+        echo "version=$version" >> $GITHUB_OUTPUT;
+    - run: apt-get update
+    - run: apt-get install zip -y
+    - name: Publish 
+      run: >
+        version=${{ steps.vars.outputs.version }}
+
+        dotnet publish $PROJECT_NAME/$PROJECT_NAME.csproj \
+          --nologo \
+          -o "publish/$PROJECT_NAME-$version-${{ matrix.runtime }}" \
+          -c Release \
+          --runtime "${{ matrix.runtime }}" \
+          --self-contained true \
+          /p:PublishSingleFile=true \
+          /p:PublishReadyToRun=true \
+          /p:PublishTrimmed=true;
+
+        cd publish;
+
+        zip -r $PROJECT_NAME-$version-${{ matrix.runtime }}.zip $PROJECT_NAME-$version-${{ matrix.runtime }};
+        cp $PROJECT_NAME-$version-${{ matrix.runtime }}.zip ../;
+        rm $PROJECT_NAME-$version-${{ matrix.runtime }}.zip;
+        cd ..;
+    - name: Upload
+      uses: actions/upload-artifact@v3
+      with:
+        name: SteamPrefill-${{ steps.vars.outputs.version }}-${{ matrix.runtime }} 
+        path: publish/
+        if-no-files-found: error
+    - name: Create Release
+      uses: softprops/action-gh-release@v1
+      if: startsWith(github.ref, 'refs/tags/')
+      with:
+        draft: true
+        name: "v${{ steps.vars.outputs.version }}"
+        files: "**/*.zip" 
+        generate_release_notes: true
