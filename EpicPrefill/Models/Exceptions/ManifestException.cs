@@ -11,5 +11,9 @@
         {
 
         }
+
+        public ManifestException()
+        {
+        }
     }
 }

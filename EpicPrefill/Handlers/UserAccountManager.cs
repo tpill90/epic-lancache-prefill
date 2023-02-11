@@ -16,7 +16,7 @@
 
         private string _user_basic = "34a02cf8f4414e29b15921876da36f9a";
         private string _pw_basic = "daafbccc737745039dffe53d94fc76cf";
-        
+
         //TODO this should probably be private
         public OauthToken OauthToken { get; set; }
 
@@ -38,7 +38,7 @@
                 _ansiConsole.LogMarkupLine("Reusing existing auth session...");
                 return;
             }
-            
+
             var requestParams = new Dictionary<string, string>
             {
                 { "token_type", "eg1" }
@@ -69,7 +69,7 @@
                 requestParams.Add("refresh_token", OauthToken.RefreshToken);
             }
 
-            
+
             var authUri = new Uri($"https://{_oauth_host}/account/api/oauth/token");
             using var requestMessage = new HttpRequestMessage(HttpMethod.Post, authUri);
             requestMessage.Content = new FormUrlEncodedContent(requestParams);
@@ -125,7 +125,7 @@
                 catch (Exception)
                 {
 
-                }  
+                }
             }
             else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
             {

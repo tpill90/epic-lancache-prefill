@@ -4,7 +4,7 @@
     public class BlobToNumBenchmark
     {
         private readonly int iterations = 500_000;
-        
+
         [Benchmark(Baseline = true)]
         public ulong Original()
         {

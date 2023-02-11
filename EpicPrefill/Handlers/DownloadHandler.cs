@@ -80,7 +80,7 @@
             var progressTask = ctx.AddTask(taskTitle, new ProgressTaskSettings { MaxValue = requestTotalSize });
 
             var failedRequests = new ConcurrentBag<QueuedRequest>();
-            
+
             await Parallel.ForEachAsync(requestsToDownload, new ParallelOptions { MaxDegreeOfParallelism = AppConfig.MaxConcurrentRequests }, async (chunk, _) =>
             {
                 var buffer = new byte[4096];
@@ -93,7 +93,7 @@
                     requestMessage.Headers.Host = baseUri.Host;
                     //TODO get this working
                     //requestMessage.Headers.Range = new RangeHeaderValue(chunk.ChunkPart.Offset, chunk.ChunkPart.Offset + chunk.ChunkPart.Size);
-                    
+
                     var response = await _client.SendAsync(requestMessage, HttpCompletionOption.ResponseHeadersRead);
                     using Stream responseStream = await response.Content.ReadAsStreamAsync();
                     response.EnsureSuccessStatusCode();
@@ -109,7 +109,7 @@
                 }
                 progressTask.Increment(chunk.DownloadSizeBytes);
             });
-            
+
             // Making sure the progress bar is always set to its max value, in-case some unexpected error leaves the progress bar showing as unfinished
             progressTask.Increment(progressTask.MaxValue);
             return failedRequests;

@@ -3,10 +3,10 @@
     public sealed class BinaryManifest
     {
         private readonly ulong _headerMagic = 0x44BEC00C;
-        
+
         public Dictionary<string, CdnChunk> ChunkDataLookup;
         public ManifestUrl Url { get; private init; }
-         
+
         public static BinaryManifest Parse(byte[] manifestBytes, ManifestUrl url)
         {
             var manifest = new BinaryManifest
@@ -28,7 +28,7 @@
             br.ReadBytes(metadataSizeBytes - 4);
 
             manifest.ChunkDataLookup = ParseChunkDataList(br);
-            
+
             // Not reading FileManifest section, as well as the CustomFields section, as we don't use any of the data in those sections
             return manifest;
         }
@@ -55,7 +55,7 @@
             string expectedShaHash = HexMate.Convert.ToHexString(br.ReadBytes(20), HexFormattingOptions.Lowercase);
             var isCompressed = br.ReadByte() == 1;
             var version = br.ReadUInt32();
-            
+
             // Need to strip two bytes for the zlib header.  The built in dotnet decompression api does not make use of it.
             br.ReadBytes(2);
 
@@ -104,7 +104,7 @@
 
                 chunkInfos[i].Hash = sharedLongBuffer.ToHexStringUpper();
             }
-            
+
             // Skipping sha1's since we don't use them
             br.BaseStream.Seek(count * 20, SeekOrigin.Current);
 

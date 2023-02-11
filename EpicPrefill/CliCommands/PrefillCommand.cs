@@ -23,7 +23,7 @@ namespace EpicPrefill.CliCommands
         }
 #endif
 
-#region Cli Args
+        #region Cli Args
 
         //TODO implement
         [CommandOption("all", Description = "Prefills all currently owned games", Converter = typeof(NullableBoolConverter))]
@@ -59,7 +59,7 @@ namespace EpicPrefill.CliCommands
             Converter = typeof(NullableBoolConverter))]
         public bool? NoAnsiEscapeSequences { get; init; }
 
-#endregion
+        #endregion
 
         private IAnsiConsole _ansiConsole;
 
@@ -80,7 +80,7 @@ namespace EpicPrefill.CliCommands
             };
 
             var epicGamesManager = new EpicGamesManager(_ansiConsole, downloadArgs);
-            await epicGamesManager.Initialize();
+            await epicGamesManager.InitializeAsync();
 
             //TODO clean this up to be how SteamPrefill does it
             var manualIds = new List<string>();

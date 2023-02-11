@@ -9,7 +9,7 @@
 
         [JsonPropertyName("buildVersion")]
         public string BuildVersion { get; set; }
-          
+
         [JsonPropertyName("catalogItemId")]
         public string CatalogItemId { get; set; }
 
@@ -18,10 +18,10 @@
 
         [JsonIgnore]
         public string Title { get; set; }
-        
+
         public override string ToString()
         {
-            return Title; 
+            return Title;
         }
     }
 }

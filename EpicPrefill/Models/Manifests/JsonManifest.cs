@@ -6,13 +6,13 @@
     {
         public string ManifestFileVersion { get; set; }
         public ulong ManifestFileVersionNum;
-        
+
 
         public Dictionary<string, string> ChunkHashList { get; set; }
         public Dictionary<string, string> ChunkShaList { get; set; }
         public Dictionary<string, string> DataGroupList { get; set; }
         public Dictionary<string, string> ChunkFilesizeList { get; set; }
-        
+
         public string GetChunkDir()
         {
             if (ManifestFileVersionNum == 0)

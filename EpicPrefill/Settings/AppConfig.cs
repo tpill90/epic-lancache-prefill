@@ -8,7 +8,7 @@ namespace EpicPrefill.Settings
             Directory.CreateDirectory(ConfigDir);
             Directory.CreateDirectory(CacheDir);
         }
-        
+
 
         /// <summary>
         /// Downloaded manifests, as well as other metadata, are saved into this directory to speedup future prefill runs.

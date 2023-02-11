@@ -26,7 +26,7 @@ namespace EpicPrefill
         }
 
         //TODO document
-        public async Task Initialize()
+        public async Task InitializeAsync()
         {
             // Init auth
             var userAccountManager = UserAccountManager.LoadFromFile(_ansiConsole);
@@ -54,7 +54,7 @@ namespace EpicPrefill
 
             // Whitespace divider
             _ansiConsole.WriteLine();
-            
+
             foreach (var appId in appIdsToDownload)
             {
                 //TODO replace with dictionary lookup
@@ -93,17 +93,17 @@ namespace EpicPrefill
             _ansiConsole.LogMarkupLine($"Starting {Cyan(app.Title)}");
 
             // Download the latest manifest, and build the list of requests in order to download the app
-            ManifestUrl manifestDownloadUrl = await _epicApi.GetManifestDownloadUrl(app);
+            ManifestUrl manifestDownloadUrl = await _epicApi.GetManifestDownloadUrlAsync(app);
             var rawManifestBytes = await _manifestHandler.DownloadManifestAsync(app, manifestDownloadUrl);
             var chunkDownloadQueue = _manifestHandler.ParseManifest(rawManifestBytes, manifestDownloadUrl);
-            
+
             // Finally run the queued downloads
             var downloadTimer = Stopwatch.StartNew();
             var totalBytes = ByteSize.FromBytes(chunkDownloadQueue.Sum(e => (long)e.DownloadSizeBytes));
 
             var verboseChunkCount = AppConfig.VerboseLogs ? $"from {LightYellow(chunkDownloadQueue.Count)} chunks" : "";
             _ansiConsole.LogMarkupLine($"Downloading {Magenta(totalBytes.ToDecimalString())} {verboseChunkCount}");
-            
+
             var downloadSuccessful = await _downloadHandler.DownloadQueuedChunksAsync(chunkDownloadQueue);
             if (downloadSuccessful)
             {

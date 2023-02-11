@@ -72,7 +72,7 @@
             });
             return chunkDownloadQueue;
         }
-        
+
         private List<QueuedRequest> BuildDownloadQueue(JsonManifest jsonManifest, ManifestUrl manifestUrl)
         {
             var guids = jsonManifest.ChunkHashList.Keys.ToList();
@@ -94,7 +94,7 @@
 
             return downloadList;
         }
-        
+
         private List<QueuedRequest> BuildDownloadQueue(BinaryManifest binaryManifest)
         {
             var downloadQueue = binaryManifest.ChunkDataLookup.Values

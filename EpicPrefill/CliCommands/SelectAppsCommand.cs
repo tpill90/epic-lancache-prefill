@@ -21,7 +21,7 @@ namespace EpicPrefill.CliCommands
             try
             {
                 var epicManager = new EpicGamesManager(ansiConsole, new DownloadArguments());
-                await epicManager.Initialize();
+                await epicManager.InitializeAsync();
 
                 var tuiAppModels = await BuildTuiAppModelsAsync(epicManager);
 
@@ -37,7 +37,7 @@ namespace EpicPrefill.CliCommands
                     return;
                 }
                 epicManager.SetAppsAsSelected(tuiAppModels);
-                
+
                 // This escape sequence is required when running on linux, otherwise will not be able to use the Spectre selection prompt
                 // See : https://github.com/gui-cs/Terminal.Gui/issues/418
                 await console.Output.WriteAsync("\x1b[?1h");

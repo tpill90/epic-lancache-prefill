@@ -12,7 +12,7 @@
         private string _launcher_host = "https://launcher-public-service-prod06.ol.epicgames.com";
 
         private string _metadataCachePath => Path.Combine(AppConfig.CacheDir, "metadataCache.json");
-        
+
         public EpicGamesApi(IAnsiConsole ansiConsole, HttpClient httpClient)
         {
             _ansiConsole = ansiConsole;
@@ -82,7 +82,7 @@
             });
 
             _ansiConsole.LogMarkupLine($"Loaded new app metadata for {LightYellow(appsMissingMetadata.Count)} apps");
-            
+
             // Serialize new metadata
             var serialized = JsonSerializer.Serialize(metadataDictionary, SerializationContext.Default.DictionaryStringAppMetadataResponse);
             await File.WriteAllTextAsync(_metadataCachePath, serialized);
@@ -117,7 +117,7 @@
         }
 
         //TODO comment
-        public async Task<ManifestUrl> GetManifestDownloadUrl(GameAsset appInfo)
+        public async Task<ManifestUrl> GetManifestDownloadUrlAsync(GameAsset appInfo)
         {
             var url = $"{_launcher_host}/launcher/api/public/assets/v2/platform/Windows/namespace/{appInfo.Namespace}/" +
                       $"catalogItem/{appInfo.CatalogItemId}/app/{appInfo.AppId}/label/Live";
