@@ -1,0 +1,29 @@
+site_name: epic-lancache-prefill wiki
+repo_url: https://github.com/tpill90/epic-lancache-prefill
+docs_dir: mkdocs
+extra_css:
+  - css/extra.css
+theme:
+  name: readthedocs
+markdown_extensions:
+  - admonition
+  - attr_list
+  - fenced_code
+  - meta
+  - nl2br
+  - sane_lists
+  - toc:
+      permalink: True
+  - tables
+plugins:
+  - awesome-pages:
+      strict: true
+nav:
+  - Welcome: index.md
+  - Detailed Command Usage: Detailed-Command-Usage.md 
+  - Install Guides: 
+    - ... | flat | install-guides/*.md
+  - Dev Guides: 
+    - ... | flat | dev-guides/*.md
+  - Miscellaneous: 
+    - ... | flat | miscellaneous/*.md
