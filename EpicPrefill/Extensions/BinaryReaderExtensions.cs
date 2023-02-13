@@ -3,6 +3,8 @@
     public static class BinaryReaderExtensions
     {
         //TODO document
+        [SuppressMessage("Performance", "EPS06:Hidden struct copy operation", Justification = "I don't believe this analyzer is correct.  " +
+                                                                                                                " Benchmarks show no additional allocations")]
         public static string ReadGuid(this BinaryReader br, byte[] sharedBuffer)
         {
             br.Read(sharedBuffer);

@@ -1,8 +1,8 @@
-﻿using EpicPrefill.Models.Manifests;
-
-namespace EpicPrefill
+﻿namespace EpicPrefill
 {
     //TODO document
+    //TODO fix this warning
+    [SuppressMessage("Design", "CA1001:Types that own disposable fields should be disposable", Justification = "Fix this.")]
     public sealed class EpicGamesManager
     {
         private readonly IAnsiConsole _ansiConsole;

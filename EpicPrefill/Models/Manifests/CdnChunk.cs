@@ -5,6 +5,7 @@
         /// <summary>
         ///  The primary identifier of a Chunk, represented as 32 character hex string.  Is a 16 byte array, that appears to be an MD5.
         /// </summary>
+        [SuppressMessage("Naming", "CA1720:Identifier contains type name", Justification = "Guid is its actual name in Epic's data structure")]
         public string Guid;
 
         /// <summary>

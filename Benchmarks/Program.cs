@@ -4,7 +4,7 @@
     {
         public static void Main(string[] args)
         {
-            var summary = BenchmarkRunner.Run<BlobToNumBenchmark>();
+            var summary = BenchmarkRunner.Run<BigEndianConversion>();
         }
     }
 }

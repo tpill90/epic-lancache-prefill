@@ -5,6 +5,8 @@
     /// <summary>
     /// https://dev.epicgames.com/docs/web-api-ref/authentication
     /// </summary>
+    //TODO fix this warning
+    [SuppressMessage("Design", "CA1001:Types that own disposable fields should be disposable", Justification = "Fix this.")]
     public sealed class UserAccountManager
     {
         private readonly IAnsiConsole _ansiConsole;

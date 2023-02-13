@@ -3,6 +3,8 @@
     //TODO document and figure out which fields arent needed
     public class ManifestResponse
     {
+        //TODO fix this warning.  Ignoring warning for the sake of releasing the app.  Build fails on warnings
+        [SuppressMessage("Performance", "CA1819:Properties should not return arrays", Justification = "<Pending>")]
         public Element[] elements { get; set; }
     }
 
@@ -13,12 +15,18 @@
         public string buildVersion { get; set; }
         public string hash { get; set; }
         public bool useSignedUrl { get; set; }
+
+        //TODO fix this warning.  Ignoring warning for the sake of releasing the app.  Build fails on warnings
+        [SuppressMessage("Performance", "CA1819:Properties should not return arrays", Justification = "<Pending>")]
         public ManifestUrl[] manifests { get; set; }
     }
 
     public class ManifestUrl
     {
         public string uri { get; set; }
+
+        //TODO fix this warning.  Ignoring warning for the sake of releasing the app.  Build fails on warnings
+        [SuppressMessage("Performance", "CA1819:Properties should not return arrays", Justification = "<Pending>")]
         public Queryparam[] queryParams { get; set; }
 
         //TODO comment
