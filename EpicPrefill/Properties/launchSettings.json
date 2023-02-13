@@ -2,7 +2,7 @@
   "profiles": {
     "Prefill - All": {
       "commandName": "Project",
-      "commandLineArgs": "prefill --all --verbose --force"
+      "commandLineArgs": "prefill --all --verbose"
     },
     "Prefill - All - No Download": {
       "commandName": "Project",
