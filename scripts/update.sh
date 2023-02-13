@@ -40,12 +40,12 @@ wget -q -nc --show-progress --progress=bar:force:noscroll $DOWNLOAD_URL
 
 # Unzip
 echo -e "${Yellow} Unzipping... ${NC}"
-unzip -q -j -o SteamPrefill-${LATEST_TAG}-linux-x64.zip
+unzip -q -j -o EpicPrefill-${LATEST_TAG}-linux-x64.zip
 
 # Required so executable permissions don't get overwritten by unzip
-chmod +x SteamPrefill update.sh
+chmod +x EpicPrefill update.sh
 
 # Cleanup
-rm SteamPrefill-${LATEST_TAG}-linux-x64.zip
+rm EpicPrefill-${LATEST_TAG}-linux-x64.zip
 
 echo -e " ${Cyan} Complete! ${NC}"
