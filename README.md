@@ -11,7 +11,7 @@
 
 Automatically fills a [Lancache](https://lancache.net/) with games from Epic Games, so that subsequent downloads for the same content will be served from the Lancache, improving speeds and reducing load on your internet connection.
 
-<img src="docs/img/Overview.png" width="730" alt="Overview">
+<img src="docs/img/Overview.png" width="750" alt="Overview">
 
 # Features
 * Select apps to prefill through an interactive menu.  
