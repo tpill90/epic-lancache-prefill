@@ -18,6 +18,6 @@ Set-Content -Value $currentContent -Path .\EpicPrefill\EpicPrefill.csproj -NoNew
 # Committing + tag.  Pushing the tag is what creates the release.
 git commit -a -m "v$newVersion"
 git tag "v$newVersion"
-git push --tags
+git push origin master --tags
 
 Pop-Location
