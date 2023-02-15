@@ -204,6 +204,9 @@ For more brand specific guides (non-exhaustive), see :
 2.  Unzip to the directory where **EpicPrefill** is currently installed, overwriting the previous executable.
 3.  Thats it!  You're all up to date!
 
+### Docker updating:
+- sudo docker pull tpill90/epic-lancache-prefill:latest
+
 # Need Help?
 If you are running into any issues, feel free to open up a Github issue on this repository.
 
