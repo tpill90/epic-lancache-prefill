@@ -57,7 +57,6 @@
 
             foreach (var appId in appIdsToDownload)
             {
-                //TODO replace with dictionary lookup
                 var app = allOwnedGames.First(e => e.AppId == appId);
                 try
                 {
@@ -93,18 +92,19 @@
             _ansiConsole.LogMarkupLine($"Starting {Cyan(app.Title)}");
 
             // Download the latest manifest, and build the list of requests in order to download the app
-            ManifestUrl manifestDownloadUrl = await _epicApi.GetManifestDownloadUrlAsync(app);
+            List<ManifestUrl> allManifestUrls = await _epicApi.GetAllDownloadUrlsAsync(app);
+            ManifestUrl manifestDownloadUrl = _epicApi.GetManifestDownloadUrl(allManifestUrls);
             var rawManifestBytes = await _manifestHandler.DownloadManifestAsync(app, manifestDownloadUrl);
             var chunkDownloadQueue = _manifestHandler.ParseManifest(rawManifestBytes, manifestDownloadUrl);
 
-            // Finally run the queued downloads
+            // Logging some metadata about the downloads
             var downloadTimer = Stopwatch.StartNew();
             var totalBytes = ByteSize.FromBytes(chunkDownloadQueue.Sum(e => (long)e.DownloadSizeBytes));
-
             var verboseChunkCount = AppConfig.VerboseLogs ? $"from {LightYellow(chunkDownloadQueue.Count)} chunks" : "";
             _ansiConsole.LogMarkupLine($"Downloading {Magenta(totalBytes.ToDecimalString())} {verboseChunkCount}");
 
-            var downloadSuccessful = await _downloadHandler.DownloadQueuedChunksAsync(chunkDownloadQueue);
+            // Finally run the queued downloads
+            var downloadSuccessful = await _downloadHandler.DownloadQueuedChunksAsync(chunkDownloadQueue, allManifestUrls);
             if (downloadSuccessful)
             {
                 // Logging some metrics about the download

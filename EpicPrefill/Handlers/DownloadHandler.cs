@@ -21,13 +21,14 @@
             _client.DefaultRequestHeaders.Add("User-Agent", AppConfig.DefaultUserAgent);
         }
 
+        //TODO document allManifestUrls
         /// <summary>
         /// Attempts to download all queued requests.  If all downloads are successful, will return true.
         /// In the case of any failed downloads, the failed downloads will be retried up to 3 times.  If the downloads fail 3 times, then
         /// false will be returned
         /// </summary>
         /// <returns>True if all downloads succeeded.  False if downloads failed 3 times.</returns>
-        public async Task<bool> DownloadQueuedChunksAsync(List<QueuedRequest> queuedRequests)
+        public async Task<bool> DownloadQueuedChunksAsync(List<QueuedRequest> queuedRequests, List<ManifestUrl> allManifestUrls)
         {
 #if DEBUG
             if (AppConfig.SkipDownloads)
@@ -37,23 +38,24 @@
 #endif
             if (_lancacheAddress == null)
             {
-                //TODO refactor
-                _lancacheAddress = await LancacheIpResolver.ResolveLancacheIpAsync(_ansiConsole, new Uri(queuedRequests.First().BaseUri).Host);
+                var cdnUrl = allManifestUrls.First().ManifestDownloadUri.Host;
+                _lancacheAddress = await LancacheIpResolver.ResolveLancacheIpAsync(_ansiConsole, cdnUrl);
             }
 
             int retryCount = 0;
             var failedRequests = new ConcurrentBag<QueuedRequest>();
             await _ansiConsole.CreateSpectreProgress(TransferSpeedUnit.Bits).StartAsync(async ctx =>
             {
+                //TODO should probably implement cycling through available CDNs when one fails
                 // Run the initial download
-                failedRequests = await AttemptDownloadAsync(ctx, "Downloading..", queuedRequests);
+                failedRequests = await AttemptDownloadAsync(ctx, "Downloading..", queuedRequests, new Uri(allManifestUrls.First().ManifestDownloadUrl));
 
                 // Handle any failed requests
                 while (failedRequests.Any() && retryCount < 3)
                 {
                     retryCount++;
                     await Task.Delay(2000 * retryCount);
-                    failedRequests = await AttemptDownloadAsync(ctx, $"Retrying  {retryCount}..", failedRequests.ToList());
+                    failedRequests = await AttemptDownloadAsync(ctx, $"Retrying  {retryCount}..", failedRequests.ToList(), new Uri(allManifestUrls.First().ManifestDownloadUrl));
                 }
             });
 
@@ -74,7 +76,7 @@
         /// </summary>
         /// <returns>A list of failed requests</returns>
         [SuppressMessage("Reliability", "CA2016:Forward the 'CancellationToken' parameter to methods", Justification = "Don't have a need to cancel")]
-        private async Task<ConcurrentBag<QueuedRequest>> AttemptDownloadAsync(ProgressContext ctx, string taskTitle, List<QueuedRequest> requestsToDownload)
+        private async Task<ConcurrentBag<QueuedRequest>> AttemptDownloadAsync(ProgressContext ctx, string taskTitle, List<QueuedRequest> requestsToDownload, Uri upstreamCdn)
         {
             double requestTotalSize = requestsToDownload.Sum(e => (long)e.DownloadSizeBytes);
             var progressTask = ctx.AddTask(taskTitle, new ProgressTaskSettings { MaxValue = requestTotalSize });
@@ -86,13 +88,10 @@
                 var buffer = new byte[4096];
                 try
                 {
-                    var baseUri = new Uri(chunk.BaseUri);
-                    var url = Path.Join($"http://{_lancacheAddress}", baseUri.PathAndQuery, chunk.DownloadUrl);
+                    var url = Path.Join($"http://{_lancacheAddress}", chunk.DownloadUrl);
 
                     using var requestMessage = new HttpRequestMessage(HttpMethod.Get, url);
-                    requestMessage.Headers.Host = baseUri.Host;
-                    //TODO get this working
-                    //requestMessage.Headers.Range = new RangeHeaderValue(chunk.ChunkPart.Offset, chunk.ChunkPart.Offset + chunk.ChunkPart.Size);
+                    requestMessage.Headers.Host = upstreamCdn.Host;
 
                     var response = await _client.SendAsync(requestMessage, HttpCompletionOption.ResponseHeadersRead);
                     using Stream responseStream = await response.Content.ReadAsStreamAsync();

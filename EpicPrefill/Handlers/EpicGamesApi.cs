@@ -117,7 +117,7 @@
         }
 
         //TODO comment
-        public async Task<ManifestUrl> GetManifestDownloadUrlAsync(GameAsset appInfo)
+        public async Task<List<ManifestUrl>> GetAllDownloadUrlsAsync(GameAsset appInfo)
         {
             var url = $"{_launcher_host}/launcher/api/public/assets/v2/platform/Windows/namespace/{appInfo.Namespace}/" +
                       $"catalogItem/{appInfo.CatalogItemId}/app/{appInfo.AppId}/label/Live";
@@ -129,8 +129,12 @@
             using var responseStream = await response.Content.ReadAsStreamAsync();
             ManifestResponse deserialized = JsonSerializer.Deserialize(responseStream, SerializationContext.Default.ManifestResponse);
 
-            var allManifestUrls = deserialized.elements.First().manifests.ToList();
-            //TODO document
+            return deserialized.elements.First().manifests.ToList();
+        }
+
+        public ManifestUrl GetManifestDownloadUrl(List<ManifestUrl> allManifestUrls)
+        {
+            //TODO document why this is
             return allManifestUrls.First(e => e.queryParams.Any(e2 => e2.name == "f_token"));
         }
     }

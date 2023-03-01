@@ -33,7 +33,7 @@
             await _ansiConsole.StatusSpinner().StartAsync("Downloading manifest", async ctx =>
             {
                 var timer = Stopwatch.StartNew();
-                using var request = new HttpRequestMessage(HttpMethod.Get, manifestDownloadUrl.UriWithParams);
+                using var request = new HttpRequestMessage(HttpMethod.Get, manifestDownloadUrl.ManifestDownloadUrlWithParams);
 
                 using var response = await _httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead);
                 response.EnsureSuccessStatusCode();
@@ -65,13 +65,13 @@
                 if (rawManifestBytes[0] == '{')
                 {
                     // Deserialize JSON Manifest
-                    var manifest = JsonSerializer.Deserialize(rawManifestBytes, SerializationContext.Default.JsonManifest);
+                    JsonManifest manifest = JsonSerializer.Deserialize(rawManifestBytes, SerializationContext.Default.JsonManifest);
                     chunkDownloadQueue = BuildDownloadQueue(manifest, manifestDownloadUrl);
                 }
                 else
                 {
                     // Otherwise Manifest is in a binary format
-                    var manifest = BinaryManifest.Parse(rawManifestBytes, manifestDownloadUrl);
+                    BinaryManifest manifest = BinaryManifest.Parse(rawManifestBytes, manifestDownloadUrl);
                     chunkDownloadQueue = BuildDownloadQueue(manifest);
                 }
 
@@ -80,6 +80,7 @@
             return chunkDownloadQueue;
         }
 
+        //TODO should the ManifestUrl.BasePath be refactored out?
         private List<QueuedRequest> BuildDownloadQueue(JsonManifest jsonManifest, ManifestUrl manifestUrl)
         {
             var guids = jsonManifest.ChunkHashList.Keys.ToList();
@@ -92,9 +93,9 @@
 
                 var downloadChunk = new QueuedRequest
                 {
-                    DownloadUrl = Path.Join(jsonManifest.GetChunkDir(), groupNum, $"{hashHexString}_{guid}.chunk"),
-                    DownloadSizeBytes = jsonManifest.ChunkFilesizeList[guid].BlobToNum(),
-                    BaseUri = manifestUrl.BaseUri
+                    //TODO refactor this, hard to read
+                    DownloadUrl = Path.Join(manifestUrl.ChunkBaseUrl, jsonManifest.GetChunkDir(), groupNum, $"{hashHexString}_{guid}.chunk"),
+                    DownloadSizeBytes = jsonManifest.ChunkFilesizeList[guid].BlobToNum()
                 };
                 downloadList.Add(downloadChunk);
             }
@@ -109,8 +110,7 @@
                                              .Select(chunk => new QueuedRequest
                                              {
                                                  DownloadSizeBytes = chunk.CompressedFileSize,
-                                                 BaseUri = binaryManifest.Url.BaseUri,
-                                                 DownloadUrl = chunk.Uri
+                                                 DownloadUrl = Path.Combine(binaryManifest.Url.ChunkBaseUrl, chunk.Uri)
                                              })
                                              .ToList();
 
