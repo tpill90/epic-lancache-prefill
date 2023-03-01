@@ -26,7 +26,7 @@
     },
     "Prefill - Selected": {
       "commandName": "Project",
-      "commandLineArgs": "prefill --verbose --force"
+      "commandLineArgs": "prefill --verbose"
     },
     "Select Apps": {
       "commandName": "Project",
