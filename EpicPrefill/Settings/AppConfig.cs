@@ -61,6 +61,8 @@ namespace EpicPrefill.Settings
 
         #endregion
 
+        public static readonly string DefaultUserAgent = "EpicGamesLauncher/14.6.2-24350103+++Portal+Release-Live Windows/10.0.19044.1.256.64bit";
+
 #if DEBUG
 
         public static bool SkipDownloads { get; set; }

@@ -134,7 +134,7 @@
                 Timeout = AppConfig.DefaultRequestTimeout
             };
             client.DefaultRequestHeaders.Add("Authorization", $"bearer {userAccountManager.OauthToken.AccessToken}");
-            client.DefaultRequestHeaders.Add("User-Agent", "UELauncher/11.0.1-14907503+++Portal+Release-Live Windows/10.0.19041.1.256.64bit");
+            client.DefaultRequestHeaders.Add("User-Agent", AppConfig.DefaultUserAgent);
             return client;
         }
 
