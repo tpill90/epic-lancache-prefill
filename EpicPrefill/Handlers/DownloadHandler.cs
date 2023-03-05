@@ -18,7 +18,7 @@
             {
                 Timeout = AppConfig.DefaultRequestTimeout
             };
-            _client.DefaultRequestHeaders.Add("User-Agent", "UserAgent");
+            _client.DefaultRequestHeaders.Add("User-Agent", AppConfig.DefaultUserAgent);
         }
 
         /// <summary>
