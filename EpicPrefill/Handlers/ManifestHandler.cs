@@ -4,12 +4,14 @@
     {
         private readonly IAnsiConsole _ansiConsole;
         private readonly HttpClient _httpClient;
+        private readonly DownloadArguments _downloadArguments;
 
-        public ManifestHandler(IAnsiConsole ansiConsole, HttpClient httpClient)
+        public ManifestHandler(IAnsiConsole ansiConsole, HttpClient httpClient, DownloadArguments downloadArguments)
         {
             _ansiConsole = ansiConsole;
             //TODO consider getting this from a factory or something.  And ensure that the auth credentials are always valid
             _httpClient = httpClient;
+            _downloadArguments = downloadArguments;
         }
 
         /// <summary>
@@ -22,7 +24,7 @@
         {
             // Load from disk if manifest already exists
             var cachedFileName = Path.Combine(AppConfig.CacheDir, $"{appInfo.AppId}-{appInfo.BuildVersion}");
-            if (File.Exists(cachedFileName))
+            if (ManifestIsCached(cachedFileName))
             {
                 return await File.ReadAllBytesAsync(cachedFileName);
             }
@@ -43,6 +45,11 @@
                 _ansiConsole.LogMarkupLine("Downloaded manifest", timer);
             });
             return responseAsBytes;
+        }
+
+        private bool ManifestIsCached(string manifestFileName)
+        {
+            return !_downloadArguments.NoCache && File.Exists(manifestFileName);
         }
 
         //TODO document

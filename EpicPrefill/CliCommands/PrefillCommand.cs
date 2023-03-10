@@ -14,7 +14,6 @@ namespace EpicPrefill.CliCommands
         [CommandOption("app", Description = "Debugging only.")]
         public List<string> AppIds { get; init; }
 
-        //TODO implement
         [CommandOption("no-download", Description = "Debugging only.", Converter = typeof(NullableBoolConverter))]
         public bool? NoDownload
         {

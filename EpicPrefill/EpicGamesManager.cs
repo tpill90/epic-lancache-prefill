@@ -35,7 +35,7 @@
             // Setup required classes
             _httpClient = InitializeHttpClient(userAccountManager);
             _epicApi = new EpicGamesApi(_ansiConsole, _httpClient);
-            _manifestHandler = new ManifestHandler(_ansiConsole, _httpClient);
+            _manifestHandler = new ManifestHandler(_ansiConsole, _httpClient, _downloadArgs);
         }
 
         public async Task DownloadMultipleAppsAsync(bool downloadAllOwnedGames, List<string> manualIds = null)
