@@ -41,7 +41,7 @@ namespace EpicPrefill.Models.ApiResponses
                 ManifestDownloadUri = new Uri(_manifestDownloadUrl);
             }
         }
-        
+
         //TODO fix this warning.  Ignoring warning for the sake of releasing the app.  Build fails on warnings
         [SuppressMessage("Performance", "CA1819:Properties should not return arrays", Justification = "<Pending>")]
         public Queryparam[] queryParams { get; set; }
