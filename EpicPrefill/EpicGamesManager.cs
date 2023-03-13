@@ -98,7 +98,7 @@
             var chunkDownloadQueue = _manifestHandler.ParseManifest(rawManifestBytes, manifestDownloadUrl);
 
             //TODO remove
-            chunkDownloadQueue = chunkDownloadQueue.Take(500).ToList();
+            //chunkDownloadQueue = chunkDownloadQueue.Take(500).ToList();
 
             // Logging some metadata about the downloads
             var downloadTimer = Stopwatch.StartNew();
