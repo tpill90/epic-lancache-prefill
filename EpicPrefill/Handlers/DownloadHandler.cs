@@ -39,7 +39,7 @@
             if (_lancacheAddress == null)
             {
                 //TODO refactor this whole new Uri(BaseUri) nonsense
-                var cdnUrl = new Uri(allManifestUrls.First().BaseUri).Host;
+                var cdnUrl = allManifestUrls.First().ManifestDownloadUri.Host;
                 _lancacheAddress = await LancacheIpResolver.ResolveLancacheIpAsync(_ansiConsole, cdnUrl);
             }
 
@@ -49,14 +49,14 @@
             {
                 //TODO should probably implement cycling through available CDNs when one fails
                 // Run the initial download
-                failedRequests = await AttemptDownloadAsync(ctx, "Downloading..", queuedRequests, new Uri(allManifestUrls.First().uri));
+                failedRequests = await AttemptDownloadAsync(ctx, "Downloading..", queuedRequests, new Uri(allManifestUrls.First().ManifestDownloadUrl));
 
                 // Handle any failed requests
                 while (failedRequests.Any() && retryCount < 3)
                 {
                     retryCount++;
                     await Task.Delay(2000 * retryCount);
-                    failedRequests = await AttemptDownloadAsync(ctx, $"Retrying  {retryCount}..", failedRequests.ToList(), new Uri(allManifestUrls.First().uri));
+                    failedRequests = await AttemptDownloadAsync(ctx, $"Retrying  {retryCount}..", failedRequests.ToList(), new Uri(allManifestUrls.First().ManifestDownloadUrl));
                 }
             });
 

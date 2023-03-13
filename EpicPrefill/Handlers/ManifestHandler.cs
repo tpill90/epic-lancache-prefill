@@ -33,7 +33,7 @@
             await _ansiConsole.StatusSpinner().StartAsync("Downloading manifest", async ctx =>
             {
                 var timer = Stopwatch.StartNew();
-                using var request = new HttpRequestMessage(HttpMethod.Get, manifestDownloadUrl.UriWithParams);
+                using var request = new HttpRequestMessage(HttpMethod.Get, manifestDownloadUrl.ManifestDownloadUrlWithParams);
 
                 using var response = await _httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead);
                 response.EnsureSuccessStatusCode();
@@ -94,7 +94,7 @@
                 var downloadChunk = new QueuedRequest
                 {
                     //TODO refactor this, hard to read
-                    DownloadUrl = Path.Join(manifestUrl.BasePath, jsonManifest.GetChunkDir(), groupNum, $"{hashHexString}_{guid}.chunk"),
+                    DownloadUrl = Path.Join(manifestUrl.ChunkBaseUrl, jsonManifest.GetChunkDir(), groupNum, $"{hashHexString}_{guid}.chunk"),
                     DownloadSizeBytes = jsonManifest.ChunkFilesizeList[guid].BlobToNum()
                 };
                 downloadList.Add(downloadChunk);
@@ -110,7 +110,7 @@
                                              .Select(chunk => new QueuedRequest
                                              {
                                                  DownloadSizeBytes = chunk.CompressedFileSize,
-                                                 DownloadUrl = Path.Combine(binaryManifest.Url.BasePath, chunk.Uri)
+                                                 DownloadUrl = Path.Combine(binaryManifest.Url.ChunkBaseUrl, chunk.Uri)
                                              })
                                              .ToList();
 

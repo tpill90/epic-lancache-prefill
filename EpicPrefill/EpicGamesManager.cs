@@ -97,6 +97,9 @@
             var rawManifestBytes = await _manifestHandler.DownloadManifestAsync(app, manifestDownloadUrl);
             var chunkDownloadQueue = _manifestHandler.ParseManifest(rawManifestBytes, manifestDownloadUrl);
 
+            //TODO remove
+            chunkDownloadQueue = chunkDownloadQueue.Take(500).ToList();
+
             // Logging some metadata about the downloads
             var downloadTimer = Stopwatch.StartNew();
             var totalBytes = ByteSize.FromBytes(chunkDownloadQueue.Sum(e => (long)e.DownloadSizeBytes));

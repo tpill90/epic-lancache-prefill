@@ -2,7 +2,7 @@
   "profiles": {
     "Prefill - All": {
       "commandName": "Project",
-      "commandLineArgs": "prefill --all --verbose"
+      "commandLineArgs": "prefill --all --verbose --nocache"
     },
     "Prefill - All - No Download": {
       "commandName": "Project",
