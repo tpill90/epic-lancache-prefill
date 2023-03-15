@@ -109,10 +109,8 @@
             JsonSerializer.Serialize(fileStream, OauthToken, SerializationContext.Default.OauthToken);
         }
 
-        //TODO this likely won't work correctly from linux command line
         private void OpenUrl(string url)
         {
-            // hack because of this: https://github.com/dotnet/corefx/issues/10361
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             {
                 url = url.Replace("&", "^&");
@@ -120,14 +118,16 @@
             }
             else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
             {
-                try
+                // Detects to see if the user is running in a "desktop environment"/GUI, or if they are running in a terminal session.
+                // Won't be able to launch a web browser without a GUI
+                // https://en.wikipedia.org/wiki/Desktop_environment
+                var currDesktopEnvironment = Environment.GetEnvironmentVariable("XDG_CURRENT_DESKTOP");
+                if (String.IsNullOrEmpty(currDesktopEnvironment))
                 {
-                    Process.Start("xdg-open", url);
+                    return;
                 }
-                catch (Exception)
-                {
 
-                }
+                Process.Start("xdg-open", url);
             }
             else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
             {
