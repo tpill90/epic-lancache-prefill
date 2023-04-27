@@ -14,6 +14,7 @@
         private EpicGamesApi _epicApi;
         private AppInfoHandler _appInfoHandler;
         private ManifestHandler _manifestHandler;
+        private UserAccountManager _userAccountManager;
 
         private PrefillSummaryResult _prefillSummaryResult = new PrefillSummaryResult();
 
@@ -23,17 +24,18 @@
             _downloadArgs = downloadArgs;
             _downloadHandler = new DownloadHandler(_ansiConsole);
             _appInfoHandler = new AppInfoHandler(_ansiConsole);
+            _userAccountManager = UserAccountManager.LoadFromFile(_ansiConsole);
         }
 
         //TODO document
         public async Task InitializeAsync()
         {
             // Init auth
-            var userAccountManager = UserAccountManager.LoadFromFile(_ansiConsole);
-            await userAccountManager.LoginAsync();
+            
+            await _userAccountManager.LoginAsync();
 
             // Setup required classes
-            _httpClient = InitializeHttpClient(userAccountManager);
+            _httpClient = InitializeHttpClient(_userAccountManager);
             _epicApi = new EpicGamesApi(_ansiConsole, _httpClient);
             _manifestHandler = new ManifestHandler(_ansiConsole, _httpClient, _downloadArgs);
         }
@@ -61,6 +63,10 @@
                 try
                 {
                     await DownloadSingleAppAsync(app);
+                    if(_userAccountManager.IsOauthTokenExpired()) 
+                    {
+                        await _userAccountManager.LoginAsync();
+                    }
                 }
                 catch (Exception e) when (e is LancacheNotFoundException || e is UserCancelledException)
                 {
