@@ -136,7 +136,7 @@
         }
 
         //TODO consider adding a buffer of 10ish minutes to the expired time, so that if a token expires while we're making requests, the requests won't fail
-        private bool IsOauthTokenExpired()
+        public bool IsOauthTokenExpired()
         {
             // Tokens are valid for 8 hours
             return DateTimeOffset.UtcNow.DateTime > OauthToken.ExpiresAt;
