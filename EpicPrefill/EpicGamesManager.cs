@@ -66,6 +66,7 @@
                     if(_userAccountManager.IsOauthTokenExpired()) 
                     {
                         await _userAccountManager.LoginAsync();
+                        UpdateAuthorization();
                     }
                 }
                 catch (Exception e) when (e is LancacheNotFoundException || e is UserCancelledException)
@@ -142,6 +143,12 @@
             client.DefaultRequestHeaders.Add("Authorization", $"bearer {userAccountManager.OauthToken.AccessToken}");
             client.DefaultRequestHeaders.Add("User-Agent", AppConfig.DefaultUserAgent);
             return client;
+        }
+
+        private void UpdateAuthorization()
+        {
+            _httpClient.DefaultRequestHeaders.Remove("Authorization");
+            _httpClient.DefaultRequestHeaders.Add("Authorization", $"bearer {_userAccountManager.OauthToken.AccessToken}");
         }
 
         #region Select Apps
