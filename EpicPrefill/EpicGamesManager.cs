@@ -9,35 +9,33 @@
         private readonly DownloadArguments _downloadArgs;
 
         private readonly DownloadHandler _downloadHandler;
-        //TODO factory or shared or something
-        private HttpClient _httpClient;
         private EpicGamesApi _epicApi;
-        private AppInfoHandler _appInfoHandler;
+        private readonly AppInfoHandler _appInfoHandler;
         private ManifestHandler _manifestHandler;
-        private UserAccountManager _userAccountManager;
+        private readonly UserAccountManager _userAccountManager;
+        private HttpClientFactory _httpClientFactory;
 
-        private PrefillSummaryResult _prefillSummaryResult = new PrefillSummaryResult();
+        private readonly PrefillSummaryResult _prefillSummaryResult = new PrefillSummaryResult();
 
         public EpicGamesManager(IAnsiConsole ansiConsole, DownloadArguments downloadArgs)
         {
             _ansiConsole = ansiConsole;
             _downloadArgs = downloadArgs;
+
+            // Setup required classes
             _downloadHandler = new DownloadHandler(_ansiConsole);
             _appInfoHandler = new AppInfoHandler(_ansiConsole);
             _userAccountManager = UserAccountManager.LoadFromFile(_ansiConsole);
+
+            _httpClientFactory = new HttpClientFactory(_ansiConsole, _userAccountManager);
+            _epicApi = new EpicGamesApi(_ansiConsole, _httpClientFactory);
+            _manifestHandler = new ManifestHandler(_ansiConsole, _httpClientFactory, _downloadArgs);
         }
 
         //TODO document
         public async Task InitializeAsync()
         {
-            // Init auth
-            
             await _userAccountManager.LoginAsync();
-
-            // Setup required classes
-            _httpClient = InitializeHttpClient(_userAccountManager);
-            _epicApi = new EpicGamesApi(_ansiConsole, _httpClient);
-            _manifestHandler = new ManifestHandler(_ansiConsole, _httpClient, _downloadArgs);
         }
 
         public async Task DownloadMultipleAppsAsync(bool downloadAllOwnedGames, List<string> manualIds = null)
@@ -63,11 +61,6 @@
                 try
                 {
                     await DownloadSingleAppAsync(app);
-                    if(_userAccountManager.IsOauthTokenExpired()) 
-                    {
-                        await _userAccountManager.LoginAsync();
-                        UpdateAuthorization();
-                    }
                 }
                 catch (Exception e) when (e is LancacheNotFoundException || e is UserCancelledException)
                 {
@@ -131,24 +124,6 @@
         public async Task<List<GameAsset>> GetAllAvailableAppsAsync()
         {
             return await _epicApi.GetOwnedAppsAsync();
-        }
-
-        //TODO Break this out into some sort of a factory method
-        private HttpClient InitializeHttpClient(UserAccountManager userAccountManager)
-        {
-            var client = new HttpClient
-            {
-                Timeout = AppConfig.DefaultRequestTimeout
-            };
-            client.DefaultRequestHeaders.Add("Authorization", $"bearer {userAccountManager.OauthToken.AccessToken}");
-            client.DefaultRequestHeaders.Add("User-Agent", AppConfig.DefaultUserAgent);
-            return client;
-        }
-
-        private void UpdateAuthorization()
-        {
-            _httpClient.DefaultRequestHeaders.Remove("Authorization");
-            _httpClient.DefaultRequestHeaders.Add("Authorization", $"bearer {_userAccountManager.OauthToken.AccessToken}");
         }
 
         #region Select Apps

@@ -1,32 +1,32 @@
 {
   "profiles": {
+    "Prefill - Selected": {
+      "commandName": "Project",
+      "commandLineArgs": "prefill --force --verbose"
+    },
     "Prefill - All": {
       "commandName": "Project",
       "commandLineArgs": "prefill --all --verbose"
     },
     "Prefill - All - No Download": {
       "commandName": "Project",
-      "commandLineArgs": "prefill --all --verbose --no-download --force"
+      "commandLineArgs": "prefill --all --no-download --force --verbose"
     },
-    "Prefill - All - No Download - No cache": {
+    "Prefill - All - No cache": {
       "commandName": "Project",
-      "commandLineArgs": "prefill --all --verbose --no-download --nocache --force"
+      "commandLineArgs": "prefill --all --nocache --force --verbose"
     },
     "Prefill - App with DLC": {
       "commandName": "Project",
-      "commandLineArgs": "prefill --app Catnip --verbose --force"
+      "commandLineArgs": "prefill --app Catnip --force --verbose"
     },
     "Prefill - Fortnite": {
       "commandName": "Project",
-      "commandLineArgs": "prefill --app Fortnite --verbose --force"
+      "commandLineArgs": "prefill --app Fortnite --force --verbose"
     },
     "Prefill - Json Manifest": {
       "commandName": "Project",
-      "commandLineArgs": "prefill --app d2da64bd4c4e422da4b1a88041492a3a --verbose --force"
-    },
-    "Prefill - Selected": {
-      "commandName": "Project",
-      "commandLineArgs": "prefill --verbose --force"
+      "commandLineArgs": "prefill --app d2da64bd4c4e422da4b1a88041492a3a --force --verbose"
     },
     "Select Apps": {
       "commandName": "Project",

@@ -3,14 +3,13 @@
     public sealed class ManifestHandler
     {
         private readonly IAnsiConsole _ansiConsole;
-        private readonly HttpClient _httpClient;
+        private readonly HttpClientFactory _httpClientFactory;
         private readonly DownloadArguments _downloadArguments;
 
-        public ManifestHandler(IAnsiConsole ansiConsole, HttpClient httpClient, DownloadArguments downloadArguments)
+        public ManifestHandler(IAnsiConsole ansiConsole, HttpClientFactory httpClientFactory, DownloadArguments downloadArguments)
         {
             _ansiConsole = ansiConsole;
-            //TODO consider getting this from a factory or something.  And ensure that the auth credentials are always valid
-            _httpClient = httpClient;
+            _httpClientFactory = httpClientFactory;
             _downloadArguments = downloadArguments;
         }
 
@@ -35,7 +34,8 @@
                 var timer = Stopwatch.StartNew();
                 using var request = new HttpRequestMessage(HttpMethod.Get, manifestDownloadUrl.ManifestDownloadUrlWithParams);
 
-                using var response = await _httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead);
+                using var httpClient = await _httpClientFactory.GetHttpClientAsync();
+                using var response = await httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead);
                 response.EnsureSuccessStatusCode();
 
                 responseAsBytes = await response.Content.ReadAsByteArrayAsync();

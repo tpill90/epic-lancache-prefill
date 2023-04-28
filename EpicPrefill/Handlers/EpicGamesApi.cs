@@ -4,19 +4,18 @@
     public class EpicGamesApi
     {
         private readonly IAnsiConsole _ansiConsole;
+        private readonly HttpClientFactory _httpClientFactory;
 
-        //TODO factory or shared or something
-        private readonly HttpClient _httpClient;
         private readonly string _launcherHost = "https://launcher-public-service-prod06.ol.epicgames.com";
         private readonly string _catalogHost = "https://catalog-public-service-prod06.ol.epicgames.com";
         private string _launcher_host = "https://launcher-public-service-prod06.ol.epicgames.com";
 
         private string _metadataCachePath => Path.Combine(AppConfig.CacheDir, "metadataCache.json");
 
-        public EpicGamesApi(IAnsiConsole ansiConsole, HttpClient httpClient)
+        public EpicGamesApi(IAnsiConsole ansiConsole, HttpClientFactory httpClientFactory)
         {
             _ansiConsole = ansiConsole;
-            _httpClient = httpClient;
+            _httpClientFactory = httpClientFactory;
         }
 
         //TODO comment
@@ -31,7 +30,8 @@
             using var request = new HttpRequestMessage(HttpMethod.Get, requestUri);
 
             // Send request
-            using var response = await _httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead);
+            using var httpClient = await _httpClientFactory.GetHttpClientAsync();
+            using var response = await httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead);
             response.EnsureSuccessStatusCode();
 
             // Read and deserialize
@@ -107,7 +107,8 @@
             using var request = new HttpRequestMessage(HttpMethod.Get, new Uri(urlWithParams));
 
             // Send request
-            using var response = await _httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead);
+            using var httpClient = await _httpClientFactory.GetHttpClientAsync();
+            using var response = await httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead);
             response.EnsureSuccessStatusCode();
 
             using var responseStream = await response.Content.ReadAsStreamAsync();
@@ -123,7 +124,8 @@
                       $"catalogItem/{appInfo.CatalogItemId}/app/{appInfo.AppId}/label/Live";
 
             using var requestMessage = new HttpRequestMessage(HttpMethod.Get, new Uri(url));
-            using var response = await _httpClient.SendAsync(requestMessage, HttpCompletionOption.ResponseHeadersRead);
+            using var httpClient = await _httpClientFactory.GetHttpClientAsync();
+            using var response = await httpClient.SendAsync(requestMessage, HttpCompletionOption.ResponseHeadersRead);
             response.EnsureSuccessStatusCode();
 
             using var responseStream = await response.Content.ReadAsStreamAsync();
