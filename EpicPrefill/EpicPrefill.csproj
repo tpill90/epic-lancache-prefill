@@ -52,6 +52,10 @@
     <PackageReference Include="HexMate" Version="0.0.3" />
     <PackageReference Include="Microsoft.AspNetCore.WebUtilities" Version="2.2.0" />
     <PackageReference Include="Terminal.Gui" Version="1.7.2" />
+    <PackageReference Include="ThisAssembly.AssemblyInfo" Version="1.2.14">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
 
     <!-- Custom Spectre.Console build -->
     <Reference Include="Spectre.Console">

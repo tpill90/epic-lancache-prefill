@@ -14,20 +14,18 @@ namespace EpicPrefill
         {
             try
             {
-                var assembly = Assembly.GetExecutingAssembly();
-                var informationVersion = assembly.GetCustomAttribute<AssemblyInformationalVersionAttribute>().InformationalVersion;
-
                 var cliArgs = ParseHiddenFlags();
                 var description = "Automatically fills a Lancache with games from Epic Launcher, so that subsequent downloads will be \n" +
                                   "  served from the Lancache, improving speeds and reducing load on your internet connection. \n" +
                                   "\n" +
                                   "  Start by selecting apps for prefill with the 'select-apps' command, then start the prefill using 'prefill'";
+
                 return await new CliApplicationBuilder()
                              .AddCommandsFromThisAssembly()
                              .SetTitle("EpicPrefill")
                              .SetExecutableName($"EpicPrefill{(OperatingSystem.IsWindows() ? ".exe" : "")}")
                              .SetDescription(description)
-                             .SetVersion($"v{informationVersion}")
+                             .SetVersion($"v{ThisAssembly.Info.InformationalVersion}")
                              .Build()
                              .RunAsync(cliArgs);
             }
