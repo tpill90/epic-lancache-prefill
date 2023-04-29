@@ -14,7 +14,7 @@ namespace EpicPrefill.Settings
         /// Downloaded manifests, as well as other metadata, are saved into this directory to speedup future prefill runs.
         /// All data in here should be able to be deleted safely.
         /// </summary>
-        public static readonly string CacheDir = GetCacheDirBaseDirectories();
+        public static readonly string CacheDir = CacheDirUtils.GetCacheDirBaseDirectories("EpicPrefill", CacheDirVersion);
 
         /// <summary>
         /// Increment when there is a breaking change made to the files in the cache directory
@@ -68,39 +68,5 @@ namespace EpicPrefill.Settings
         public static bool SkipDownloads { get; set; }
 
 #endif
-
-        //TODO move to lancacheprefill.common
-        /// <summary>
-        /// Gets the base directories for the cache folder, determined by which Operating System the app is currently running on.
-        /// </summary>
-        /// <returns></returns>
-        /// <exception cref="NotSupportedException"></exception>
-        /// <exception cref="ArgumentOutOfRangeException"></exception>
-        private static string GetCacheDirBaseDirectories()
-        {
-            if (System.OperatingSystem.IsWindows())
-            {
-                string pathAppData = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
-                return Path.Combine(pathAppData, "EpicPrefill", "Cache", CacheDirVersion);
-            }
-            if (System.OperatingSystem.IsLinux())
-            {
-                // Gets base directories for the XDG Base Directory specification (Linux)
-                string pathHome = Environment.GetEnvironmentVariable("HOME")
-                                  ?? throw new ArgumentNullException("HOME", "Could not determine HOME directory");
-
-                string pathXdgCacheHome = Environment.GetEnvironmentVariable("XDG_CACHE_HOME")
-                                          ?? Path.Combine(pathHome, ".cache");
-
-                return Path.Combine(pathXdgCacheHome, "EpicPrefill", CacheDirVersion);
-            }
-            if (System.OperatingSystem.IsMacOS())
-            {
-                string pathLibraryCaches = Path.GetFullPath("~/Library/Caches");
-                return Path.Combine(pathLibraryCaches, "EpicPrefill", CacheDirVersion);
-            }
-
-            throw new NotSupportedException($"Unknown platform {RuntimeInformation.OSDescription}");
-        }
     }
 }
