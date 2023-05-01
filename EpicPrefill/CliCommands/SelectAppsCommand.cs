@@ -56,7 +56,7 @@ namespace EpicPrefill.CliCommands
             //TODO figure out what exceptions to handle
             catch (Exception e)
             {
-                ansiConsole.WriteException(e, ExceptionFormats.ShortenPaths);
+                ansiConsole.LogException(e);
             }
         }
 

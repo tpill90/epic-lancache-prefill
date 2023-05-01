@@ -1,3 +1,5 @@
+using Spectre.Console;
+
 namespace EpicPrefill
 {
     /* TODO
@@ -42,15 +44,15 @@ namespace EpicPrefill
                 {
                     AnsiConsole.Console.MarkupLine(Red("Timed out while waiting for password entry"));
                 }
-                AnsiConsole.Console.WriteException(e, ExceptionFormats.ShortenPaths);
+                AnsiConsole.Console.LogException(e);
             }
             catch (TaskCanceledException e)
             {
-                AnsiConsole.Console.WriteException(e, ExceptionFormats.ShortenPaths);
+                AnsiConsole.Console.LogException(e);
             }
             catch (Exception e)
             {
-                AnsiConsole.Console.WriteException(e, ExceptionFormats.ShortenPaths);
+                AnsiConsole.Console.LogException(e);
             }
 
             return 0;
