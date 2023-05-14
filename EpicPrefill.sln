@@ -10,8 +10,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".Solution Items", ".Solutio
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EpicPrefill", "EpicPrefill\EpicPrefill.csproj", "{C9891AEF-F9A1-4D6C-9F48-AAB0B054EE81}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LancachePrefill.Common", "LancachePrefill.Common\LancachePrefill.Common.csproj", "{D983EC87-5052-4E88-8891-23EE47A5FF9A}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".github", ".github", "{964C7C38-DF8F-4D47-AFD0-30B670EFA4AB}"
 	ProjectSection(SolutionItems) = preProject
 		.github\workflows\build-and-test.yml = .github\workflows\build-and-test.yml
@@ -25,16 +23,14 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Benchmarks", "Benchmarks\Be
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Testing", "Testing", "{D40480CD-E51C-48F5-B1C5-938420D33C3A}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LancachePrefill.Common", "..\lancache-prefill-common\LancachePrefill.Common.csproj", "{9C41B869-196B-4669-BF04-28E999BCD40D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{D983EC87-5052-4E88-8891-23EE47A5FF9A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D983EC87-5052-4E88-8891-23EE47A5FF9A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D983EC87-5052-4E88-8891-23EE47A5FF9A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D983EC87-5052-4E88-8891-23EE47A5FF9A}.Release|Any CPU.Build.0 = Release|Any CPU
 		{C9891AEF-F9A1-4D6C-9F48-AAB0B054EE81}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{C9891AEF-F9A1-4D6C-9F48-AAB0B054EE81}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C9891AEF-F9A1-4D6C-9F48-AAB0B054EE81}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -47,6 +43,10 @@ Global
 		{3467CD6C-B4F2-4EE5-9872-407C2985C457}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3467CD6C-B4F2-4EE5-9872-407C2985C457}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3467CD6C-B4F2-4EE5-9872-407C2985C457}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9C41B869-196B-4669-BF04-28E999BCD40D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9C41B869-196B-4669-BF04-28E999BCD40D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9C41B869-196B-4669-BF04-28E999BCD40D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9C41B869-196B-4669-BF04-28E999BCD40D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

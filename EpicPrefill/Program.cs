@@ -1,5 +1,3 @@
-using Spectre.Console;
-
 namespace EpicPrefill
 {
     /* TODO
@@ -12,21 +10,22 @@ namespace EpicPrefill
      */
     public static class Program
     {
+        private const string Description = "Automatically fills a Lancache with games from Epic Launcher, so that subsequent downloads will be \n" +
+            "  served from the Lancache, improving speeds and reducing load on your internet connection. \n" +
+            "\n" +
+            "  Start by selecting apps for prefill with the 'select-apps' command, then start the prefill using 'prefill'";
+
         public static async Task<int> Main()
         {
+            //TODO dedupe exception handling at the top level.  Migrate to custom CLIFX binary just like SteamPrefill
             try
             {
                 var cliArgs = ParseHiddenFlags();
-                var description = "Automatically fills a Lancache with games from Epic Launcher, so that subsequent downloads will be \n" +
-                                  "  served from the Lancache, improving speeds and reducing load on your internet connection. \n" +
-                                  "\n" +
-                                  "  Start by selecting apps for prefill with the 'select-apps' command, then start the prefill using 'prefill'";
-
                 return await new CliApplicationBuilder()
                              .AddCommandsFromThisAssembly()
                              .SetTitle("EpicPrefill")
-                             .SetExecutableName($"EpicPrefill{(OperatingSystem.IsWindows() ? ".exe" : "")}")
-                             .SetDescription(description)
+                             .SetExecutableNamePlatformAware("EpicPrefill")
+                             .SetDescription(Description)
                              .SetVersion($"v{ThisAssembly.Info.InformationalVersion}")
                              .Build()
                              .RunAsync(cliArgs);
@@ -40,10 +39,6 @@ namespace EpicPrefill
                 //{
                 //    AnsiConsole.Console.MarkupLine(Red("Timed out while waiting for username entry"));
                 //}
-                if (e.StackTrace.Contains(nameof(SpectreConsoleExtensions.ReadPasswordAsync)))
-                {
-                    AnsiConsole.Console.MarkupLine(Red("Timed out while waiting for password entry"));
-                }
                 AnsiConsole.Console.LogException(e);
             }
             catch (TaskCanceledException e)
@@ -62,7 +57,7 @@ namespace EpicPrefill
         /// <summary>
         /// Adds hidden flags that may be useful for debugging/development, but shouldn't be displayed to users in the help text
         /// </summary>
-        public static List<string> ParseHiddenFlags()
+        private static List<string> ParseHiddenFlags()
         {
             // Have to skip the first argument, since its the path to the executable
             var args = Environment.GetCommandLineArgs().Skip(1).ToList();
@@ -73,12 +68,6 @@ namespace EpicPrefill
             }
 
             return args;
-        }
-
-        //TODO move to lancache prefill common
-        public static class OperatingSystem
-        {
-            public static bool IsWindows() => RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
         }
     }
 }
