@@ -33,6 +33,16 @@ if [ -z "${LATEST_TAG}" ]; then
 fi
 echo -e " Found latest version : ${Cyan} ${LATEST_TAG} ${NC}"
 
+# Checking to see if EpicPrefill is already up to date
+if [ -f ./EpicPrefill ]; then
+    CURRENT_VERSION=$(./EpicPrefill --version)
+
+    if [ "${CURRENT_VERSION}" == "v${LATEST_TAG}" ]; then
+        echo -e "${Yellow} Already up to date !${NC}"
+        exit
+    fi
+fi
+
 # Downloading latest version
 echo -e "${Yellow} Downloading... ${NC}"
 DOWNLOAD_URL="https://github.com/tpill90/epic-lancache-prefill/releases/download/v${LATEST_TAG}/EpicPrefill-${LATEST_TAG}-linux-x64.zip"
