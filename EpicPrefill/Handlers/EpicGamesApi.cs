@@ -45,7 +45,7 @@
             }
 
             _ansiConsole.LogMarkupLine($"Retrieved {Magenta(ownedApps.Count)} apps", timer);
-            return ownedApps.OrderBy(e => e.Title).ToList();
+            return ownedApps;
         }
 
         //TODO comment

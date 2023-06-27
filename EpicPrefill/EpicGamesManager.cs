@@ -120,10 +120,15 @@
             }
         }
 
-        //TODO I don't like the fact that this is a straight pass through
+        //TODO rename?
         public async Task<List<GameAsset>> GetAllAvailableAppsAsync()
         {
-            return await _epicApi.GetOwnedAppsAsync();
+            var ownedApps = await _epicApi.GetOwnedAppsAsync();
+
+            // Unreal Engine needs to be filtered out as adding even a single version of it spams select-apps with a huge number of entries
+            return ownedApps.Where(e => !e.Title.Contains("Unreal Engine") && !e.Title.Contains("Quixel Bridge"))
+                            .OrderBy(e => e.Title)
+                            .ToList();
         }
 
         #region Select Apps
