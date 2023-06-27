@@ -127,7 +127,7 @@
 
             // Unreal Engine needs to be filtered out as adding even a single version of it spams select-apps with a huge number of entries
             return ownedApps.Where(e => !e.Title.Contains("Unreal Engine") && !e.Title.Contains("Quixel Bridge"))
-                            .OrderBy(e => e.Title)
+                            .OrderBy(e => e.Title, StringComparer.OrdinalIgnoreCase)
                             .ToList();
         }
 
