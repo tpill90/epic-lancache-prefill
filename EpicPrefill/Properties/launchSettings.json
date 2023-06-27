@@ -1,20 +1,20 @@
 {
   "profiles": {
-    "Prefill - Selected": {
+    "Prefill Selected": {
       "commandName": "Project",
       "commandLineArgs": "prefill --force --verbose"
     },
-    "Prefill - All": {
+    "Prefill All": {
       "commandName": "Project",
       "commandLineArgs": "prefill --all --verbose"
     },
-    "Prefill - All - No Download": {
+    "Prefill All - No Download": {
       "commandName": "Project",
       "commandLineArgs": "prefill --all --no-download --force --verbose"
     },
-    "Prefill - All - No cache": {
+    "Prefill All - No Download - No cache": {
       "commandName": "Project",
-      "commandLineArgs": "prefill --all --nocache --force --verbose"
+      "commandLineArgs": "prefill --all --no-download --nocache --force --verbose"
     },
     "Prefill - App with DLC": {
       "commandName": "Project",
