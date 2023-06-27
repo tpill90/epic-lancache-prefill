@@ -24,6 +24,11 @@ namespace EpicPrefill.CliCommands
                 await epicManager.InitializeAsync();
 
                 var tuiAppModels = await BuildTuiAppModelsAsync(epicManager);
+                if (!tuiAppModels.Any())
+                {
+                    ansiConsole.LogMarkup(Red("Account has no owned apps!  This is likely because it is a recently created account.  Add some games to your account and try again"));
+                    throw new CommandException("!", 2);
+                }
 
                 // Initialize and start the tui
                 Application.UseSystemConsole = true;
@@ -53,6 +58,10 @@ namespace EpicPrefill.CliCommands
                     await epicManager.DownloadMultipleAppsAsync(false);
                 }
             }
+            catch (CommandException)
+            {
+                throw;
+            }
             //TODO figure out what exceptions to handle
             catch (Exception e)
             {
@@ -67,8 +76,8 @@ namespace EpicPrefill.CliCommands
             var previouslySelectedApps = epicManager.LoadPreviouslySelectedApps();
 
             // Building out Tui models
-            var tuiAppModels = ownedApps.Select(e => new TuiAppInfo(e.AppId, e.Title))
-                                        .ToList();
+            var tuiAppModels = ownedApps.Select(e => new TuiAppInfo(e.AppId, e.Title)).ToList();
+
             // Flagging previously selected apps as selected
             foreach (var appInfo in tuiAppModels)
             {
