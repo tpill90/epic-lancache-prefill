@@ -6,7 +6,7 @@
 
     <AssemblyName>EpicPrefill</AssemblyName>
     <RootNamespace>EpicPrefill</RootNamespace>
-    <VersionPrefix>1.1.2</VersionPrefix>
+    <VersionPrefix>1.1.3</VersionPrefix>
     <Authors>tpill90</Authors>
 
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
