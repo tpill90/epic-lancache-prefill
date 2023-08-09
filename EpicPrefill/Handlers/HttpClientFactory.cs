@@ -15,7 +15,7 @@
         //TODO document
         public async Task<HttpClient> GetHttpClientAsync()
         {
-            if (_userAccountManager.IsOauthTokenExpired())
+            if (_userAccountManager.OauthTokenIsExpired())
             {
                 await _userAccountManager.LoginAsync();
             }

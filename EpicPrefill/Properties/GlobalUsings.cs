@@ -39,7 +39,7 @@ global using System.Threading.Tasks;
 global using Terminal.Gui;
 global using static LancachePrefill.Common.SpectreFormatters;
 global using AnsiConsoleExtensions = LancachePrefill.Common.Extensions.AnsiConsoleExtensions;
-global using System.Threading;
+global using System.Runtime.Serialization;
 global using EpicPrefill.Extensions;
 global using EpicPrefill.Models.Manifests;
 global using EpicPrefill.Models.Exceptions;

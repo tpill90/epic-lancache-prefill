@@ -13,7 +13,7 @@
         public string RefreshToken { get; set; }
 
         [JsonPropertyName("refresh_expires_at")]
-        public DateTime RefreshExpiresAt { get; set; }
+        public DateTime RefreshTokenExpiresAt { get; set; }
 
         [JsonPropertyName("account_id")]
         public string AccountId { get; set; }
