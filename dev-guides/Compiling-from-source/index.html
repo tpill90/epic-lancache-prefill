@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="shortcut icon" href="../../img/favicon.ico" />
+    <title>Compiling From Source - epic-lancache-prefill wiki</title>
+    <link rel="stylesheet" href="../../css/theme.css" />
+    <link rel="stylesheet" href="../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+        <link href="../../css/extra.css" rel="stylesheet" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Compiling From Source";
+        var mkdocs_page_input_path = "dev-guides/Compiling-from-source.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../.." class="icon icon-home"> epic-lancache-prefill wiki
+        </a>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../..">Welcome</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../Detailed-Command-Usage/">Detailed Command Usage</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Install Guides</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../install-guides/Docker-Setup-Guide/">Docker Setup Guide</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../install-guides/Install-Guide-For-Linux-Beginners/">Install Guide For Linux Beginners</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../install-guides/Unraid-Setup-Guide/">Unraid Setup Guide</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Dev Guides</span></p>
+              <ul class="current">
+                  <li class="toctree-l1 current"><a class="reference internal current" href="./">Compiling From Source</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#installing-prerequisites">Installing Prerequisites</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#using-chocolatey">Using Chocolatey</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#manually">Manually</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#cloning-the-repo-and-submodules">Cloning the repo and submodules</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#compiling">Compiling</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#running-the-project">Running the project</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#executing-unit-tests">Executing Unit Tests</a>
+    </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../mkdocs-setup/">Working With Project Documentation</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Miscellaneous</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../miscellaneous/External-Links/">External Links</a>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../..">epic-lancache-prefill wiki</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../.." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">Dev Guides</li>
+      <li class="breadcrumb-item active">Compiling From Source</li>
+    <li class="wy-breadcrumbs-aside">
+          <a href="https://github.com/tpill90/epic-lancache-prefill/edit/master/docs/dev-guides/Compiling-from-source.md" class="icon icon-github"> Edit on GitHub</a>
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="compiling-from-source">Compiling From Source<a class="headerlink" href="#compiling-from-source" title="Permanent link">&para;</a></h1>
+<h2 id="installing-prerequisites">Installing Prerequisites<a class="headerlink" href="#installing-prerequisites" title="Permanent link">&para;</a></h2>
+<p>Only the .NET 6 SDK is required to compile the project.  This can be installed through one of the following methods</p>
+<h3 id="using-chocolatey">Using Chocolatey<a class="headerlink" href="#using-chocolatey" title="Permanent link">&para;</a></h3>
+<pre><code class="language-powershell">choco install dotnet-6.0-sdk
+# Needs to be removed, in order to resolve issue with Nuget being preconfigured wrong.  
+# Will auto-regenerate on first run.
+Remove-Item &quot;C:\Users\$Env:USERNAME\AppData\Roaming\NuGet\nuget.config&quot;
+</code></pre>
+<h3 id="manually">Manually<a class="headerlink" href="#manually" title="Permanent link">&para;</a></h3>
+<p>The latest .NET 6.0 SDK can be found here  <a href="https://download.visualstudio.microsoft.com/download/pr/deb4711b-7bbc-4afa-8884-9f2b964797f2/fb603c451b2a6e0a2cb5372d33ed68b9/dotnet-sdk-6.0.300-win-x64.exe">.NET 6.0 SDK - Windows x64 Installer</a></p>
+<h2 id="cloning-the-repo-and-submodules">Cloning the repo and submodules<a class="headerlink" href="#cloning-the-repo-and-submodules" title="Permanent link">&para;</a></h2>
+<pre><code class="language-powershell">git clone --recurse-submodules -j8 https://github.com/tpill90/epic-lancache-prefill.git
+</code></pre>
+<p>If you've already cloned the repository without the submodules, use this command to include the submodules:</p>
+<pre><code>git submodule update --init --recursive
+</code></pre>
+<h2 id="compiling">Compiling<a class="headerlink" href="#compiling" title="Permanent link">&para;</a></h2>
+<p>The project can be compiled by running the following in the repository root (the directory with the .sln file).  This will generate an .exe that can be run locally.  Subsequent <code>dotnet build</code> commands will perform incremental compilation.</p>
+<pre><code class="language-powershell">dotnet build
+</code></pre>
+<h2 id="running-the-project">Running the project<a class="headerlink" href="#running-the-project" title="Permanent link">&para;</a></h2>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>These steps assume that the working directory is <code>/EpicPrefill</code>.  All commands assume that they can find <code>EpicPrefill.csproj</code> in the working dir.</p>
+</div>
+<p>Typically, for development you will want to run the project in <code>Debug</code> mode.  This mode will run dramatically slower than <code>Release</code>, however it will leave useful debugging information in the compiled assembly.  Running the following will detect and compile any changes, and then execute the project:</p>
+<pre><code class="language-powershell">dotnet run
+</code></pre>
+<p>The above is analogous to running <code>./EpicPrefill.exe</code> without any parameters.  To instead supply parameters :</p>
+<pre><code class="language-powershell">dotnet run -- prefill --all
+</code></pre>
+<p>Alternatively, to run the project at full speed with all compilation optimizations enabled, add the additional <code>--configuration Release</code> flag:</p>
+<pre><code class="language-powershell">dotnet run --configuration Release
+</code></pre>
+<h2 id="executing-unit-tests">Executing Unit Tests<a class="headerlink" href="#executing-unit-tests" title="Permanent link">&para;</a></h2>
+<p>To compile and run all tests in the entire repo, run the following command:</p>
+<pre><code class="language-powershell">dotnet test
+</code></pre>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../../install-guides/Unraid-Setup-Guide/" class="btn btn-neutral float-left" title="Unraid Setup Guide"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../mkdocs-setup/" class="btn btn-neutral float-right" title="Working With Project Documentation">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+        <span>
+          <a href="https://github.com/tpill90/epic-lancache-prefill" class="fa fa-github" style="color: #fcfcfc"> GitHub</a>
+        </span>
+    
+    
+      <span><a href="../../install-guides/Unraid-Setup-Guide/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../mkdocs-setup/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../..";</script>
+    <script src="../../js/theme_extra.js"></script>
+    <script src="../../js/theme.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

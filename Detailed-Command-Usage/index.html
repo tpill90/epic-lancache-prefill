@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>Detailed Command Usage - epic-lancache-prefill wiki</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+        <link href="../css/extra.css" rel="stylesheet" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Detailed Command Usage";
+        var mkdocs_page_input_path = "Detailed-Command-Usage.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href=".." class="icon icon-home"> epic-lancache-prefill wiki
+        </a>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="..">Welcome</a>
+                </li>
+              </ul>
+              <ul class="current">
+                <li class="toctree-l1 current"><a class="reference internal current" href="./">Detailed Command Usage</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#prefill">prefill</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#clear-cache">clear-cache</a>
+    </li>
+    </ul>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Install Guides</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../install-guides/Docker-Setup-Guide/">Docker Setup Guide</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../install-guides/Install-Guide-For-Linux-Beginners/">Install Guide For Linux Beginners</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../install-guides/Unraid-Setup-Guide/">Unraid Setup Guide</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Dev Guides</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../dev-guides/Compiling-from-source/">Compiling From Source</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../dev-guides/mkdocs-setup/">Working With Project Documentation</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Miscellaneous</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../miscellaneous/External-Links/">External Links</a>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">epic-lancache-prefill wiki</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
+      <li class="breadcrumb-item active">Detailed Command Usage</li>
+    <li class="wy-breadcrumbs-aside">
+          <a href="https://github.com/tpill90/epic-lancache-prefill/edit/master/docs/Detailed-Command-Usage.md" class="icon icon-github"> Edit on GitHub</a>
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="detailed-command-usage">Detailed Command Usage<a class="headerlink" href="#detailed-command-usage" title="Permanent link">&para;</a></h1>
+<h2 id="prefill">prefill<a class="headerlink" href="#prefill" title="Permanent link">&para;</a></h2>
+<p>Automatically fills a Lancache with games from Epic Games so that subsequent downloads will be served from the Lancache, improving speeds and reducing load on your internet connection.</p>
+<p>Will keep track of which games have been previously downloaded, and will only download games that have updates.</p>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th></th>
+<th>Values</th>
+<th>Default</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>--all</td>
+<td></td>
+<td></td>
+<td></td>
+<td>Downloads all owned apps, useful for prefilling a completely empty cache.</td>
+</tr>
+<tr>
+<td>--force</td>
+<td>-f</td>
+<td></td>
+<td></td>
+<td>By default, <strong>EpicPrefill</strong> will keep track of the most recently prefilled apps, and will only attempt to prefill if there it determines there a newer version available for download.  This default behavior will work best for most use cases, as no time will be wasted re-downloading files that have been previously prefilled.  <br/><br/> Running with the flag <code>--force</code> will override this behavior, and instead will always run the prefill, re-downloading all files for the selected apps.  This flag may be useful for diagnostics, or benchmarking network performance.</td>
+</tr>
+<tr>
+<td>--nocache</td>
+<td></td>
+<td></td>
+<td></td>
+<td><strong>EpicPrefill</strong> will cache copies of certain files on disk, in order to dramatically speed up future runs.  These cache files will be stored in the <code>/Cache</code> directory in the same directory as <strong>EpicPrefill</strong>.  However, in some scenarios this disk cache can potentially take up a non-trivial amount of storage (~1gb), which may not be ideal for all use cases.</td>
+</tr>
+<tr>
+<td>--verbose</td>
+<td></td>
+<td></td>
+<td></td>
+<td>Produces more detailed log output.  By default, games that are already up to date will not be displayed at all.  Specifying this option will make it so that all games, even ones up to date, will be logged.</td>
+</tr>
+<tr>
+<td>--unit</td>
+<td></td>
+<td>bits, bytes</td>
+<td><strong>bits</strong></td>
+<td>Specifies which unit to use to display download speed.</td>
+</tr>
+<tr>
+<td>--no-ansi</td>
+<td></td>
+<td></td>
+<td></td>
+<td>Application output will be in plain text, rather than using the visually appealing colors and progress bars.  Should only be used if terminal does not support Ansi Escape sequences, or when redirecting output to a file.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="clear-cache">clear-cache<a class="headerlink" href="#clear-cache" title="Permanent link">&para;</a></h2>
+<p>Deletes temporary cache files stored in the <code>/Cache</code> directory.<br />
+These files are cached in order to dramatically speed up future <code>prefill</code> runs (in some cases 3X faster),<br />
+however in some cases this disk cache can potentially take up a non-trivial amount of storage (~1gb).  </p>
+<p><img alt="clear-cache" src="../images/detailed-commands/Clear-Cache.png" style="width:630px" /></p>
+<p>These cache files will also build up over time, as newer versions of games are released, leaving unused cache data behind that will never be used again.</p>
+<p>In the case that you would like to save disk space without having to constantly clear the cache, <br />
+running <code>prefill</code> with the <code>--nocache</code> flag specified will prevent the cache files from being written in the first place.</p>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>--yes</td>
+<td>-y</td>
+<td>Skips the prompt asking to clear the cache, and immediately begins clearing the cache.</td>
+</tr>
+</tbody>
+</table>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href=".." class="btn btn-neutral float-left" title="Welcome"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../install-guides/Docker-Setup-Guide/" class="btn btn-neutral float-right" title="Docker Setup Guide">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+        <span>
+          <a href="https://github.com/tpill90/epic-lancache-prefill" class="fa fa-github" style="color: #fcfcfc"> GitHub</a>
+        </span>
+    
+    
+      <span><a href=".." style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../install-guides/Docker-Setup-Guide/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "..";</script>
+    <script src="../js/theme_extra.js"></script>
+    <script src="../js/theme.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>
