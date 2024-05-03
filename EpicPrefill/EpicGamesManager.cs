@@ -40,7 +40,7 @@
 
         public async Task DownloadMultipleAppsAsync(bool downloadAllOwnedGames, List<string> manualIds = null)
         {
-            var allOwnedGames = await _epicApi.GetOwnedAppsAsync();
+            List<GameAsset> allOwnedGames = await GetAllAvailableAppsAsync();
 
             var appIdsToDownload = LoadPreviouslySelectedApps();
             if (manualIds != null)
@@ -120,7 +120,8 @@
             }
         }
 
-        //TODO rename?
+        //TODO rename to something like GetAvailableGames?
+        //TODO should this just be merged with GetOwnedAppsAsync?
         public async Task<List<GameAsset>> GetAllAvailableAppsAsync()
         {
             var ownedApps = await _epicApi.GetOwnedAppsAsync();

@@ -19,7 +19,7 @@
         }
 
         //TODO comment
-        public async Task<List<GameAsset>> GetOwnedAppsAsync()
+        internal async Task<List<GameAsset>> GetOwnedAppsAsync()
         {
             //TODO this should probably be a status spinner
             _ansiConsole.LogMarkupLine("Retrieving owned apps");
@@ -44,7 +44,7 @@
                 app.Title = appMetadata[app.AppId].title;
             }
 
-            _ansiConsole.LogMarkupLine($"Retrieved {Magenta(ownedApps.Count)} apps", timer);
+            _ansiConsole.LogMarkupLine($"Retrieved {Magenta(ownedApps.Count)} owned apps", timer);
             return ownedApps;
         }
 
