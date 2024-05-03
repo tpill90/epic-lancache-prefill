@@ -1,4 +1,6 @@
-﻿namespace EpicPrefill.Handlers
+﻿using System.Threading;
+
+namespace EpicPrefill.Handlers
 {
     public sealed class DownloadHandler : IDisposable
     {
@@ -14,10 +16,7 @@
         {
             _ansiConsole = ansiConsole;
 
-            _client = new HttpClient
-            {
-                Timeout = AppConfig.DefaultRequestTimeout
-            };
+            _client = new HttpClient();
             _client.DefaultRequestHeaders.Add("User-Agent", AppConfig.DefaultUserAgent);
         }
 
@@ -77,7 +76,6 @@
         /// </summary>
         /// <param name="forceRecache">When specified, will cause the cache to delete the existing cached data for a request, and redownload it again.</param>
         /// <returns>A list of failed requests</returns>
-        [SuppressMessage("Reliability", "CA2016:Forward the 'CancellationToken' parameter to methods", Justification = "Don't have a need to cancel")]
         private async Task<ConcurrentBag<QueuedRequest>> AttemptDownloadAsync(ProgressContext ctx, string taskTitle, List<QueuedRequest> requestsToDownload,
                                                                                 Uri upstreamCdn, bool forceRecache = false)
         {
@@ -88,7 +86,6 @@
 
             await Parallel.ForEachAsync(requestsToDownload, new ParallelOptions { MaxDegreeOfParallelism = AppConfig.MaxConcurrentRequests }, async (chunk, _) =>
             {
-                var buffer = new byte[4096];
                 try
                 {
                     var url = Path.Join($"http://{_lancacheAddress}", chunk.DownloadUrl);
@@ -100,12 +97,14 @@
                     using var requestMessage = new HttpRequestMessage(HttpMethod.Get, url);
                     requestMessage.Headers.Host = upstreamCdn.Host;
 
-                    var response = await _client.SendAsync(requestMessage, HttpCompletionOption.ResponseHeadersRead);
-                    using Stream responseStream = await response.Content.ReadAsStreamAsync();
+                    using var cts = new CancellationTokenSource();
+                    using var response = await _client.SendAsync(requestMessage, HttpCompletionOption.ResponseHeadersRead, cts.Token);
+                    using Stream responseStream = await response.Content.ReadAsStreamAsync(cts.Token);
                     response.EnsureSuccessStatusCode();
 
                     // Don't save the data anywhere, so we don't have to waste time writing it to disk.
-                    while (await responseStream.ReadAsync(buffer, 0, buffer.Length, _) != 0)
+                    var buffer = new byte[4096];
+                    while (await responseStream.ReadAsync(buffer, cts.Token) != 0)
                     {
                     }
                 }
