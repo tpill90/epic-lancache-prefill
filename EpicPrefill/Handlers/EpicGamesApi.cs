@@ -36,7 +36,7 @@
 
             // Read and deserialize
             using var responseContent = await response.Content.ReadAsStreamAsync();
-            var ownedApps = JsonSerializer.Deserialize(responseContent, SerializationContext.Default.ListGameAsset);
+            var ownedApps = await JsonSerializer.DeserializeAsync(responseContent, SerializationContext.Default.ListGameAsset);
 
             var appMetadata = await LoadAppMetadataAsync(ownedApps);
             foreach (var app in ownedApps)
@@ -112,7 +112,7 @@
             response.EnsureSuccessStatusCode();
 
             using var responseStream = await response.Content.ReadAsStreamAsync();
-            var appMetadata = JsonSerializer.Deserialize(responseStream, SerializationContext.Default.DictionaryStringAppMetadataResponse);
+            var appMetadata = await JsonSerializer.DeserializeAsync(responseStream, SerializationContext.Default.DictionaryStringAppMetadataResponse);
 
             return appMetadata.Values.First();
         }
@@ -129,7 +129,7 @@
             response.EnsureSuccessStatusCode();
 
             using var responseStream = await response.Content.ReadAsStreamAsync();
-            ManifestResponse deserialized = JsonSerializer.Deserialize(responseStream, SerializationContext.Default.ManifestResponse);
+            ManifestResponse deserialized = await JsonSerializer.DeserializeAsync(responseStream, SerializationContext.Default.ManifestResponse);
 
             return deserialized.elements.First().manifests.ToList();
         }

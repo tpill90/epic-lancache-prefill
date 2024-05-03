@@ -18,7 +18,7 @@ jobs:
   # The duplicate releases happen because of a race condition, where each parallel publish job thinks the release has not yet been created.
   create-placeholder-release:
     runs-on: ubuntu-latest
-    container: mcr.microsoft.com/dotnet/sdk:6.0
+    container: mcr.microsoft.com/dotnet/sdk:8.0
     steps:
     - uses: actions/checkout@v3
       with:
@@ -27,7 +27,7 @@ jobs:
     - name: Set Version
       id: vars
       run: |
-        version=$(grep -Po '(?<=<VersionPrefix>)(.*?)(?=</VersionPrefix>)' $PROJECT_NAME/$PROJECT_NAME.csproj); 
+        version=$(grep -Po '(?<=<VersionPrefix>)(.*?)(?=</VersionPrefix>)' $PROJECT_NAME/$PROJECT_NAME.csproj);
         echo "version=$version" >> $GITHUB_OUTPUT;
     - name: Create Release
       uses: softprops/action-gh-release@v1
@@ -35,12 +35,12 @@ jobs:
       with:
         draft: true
         name: "v${{ steps.vars.outputs.version }}"
-        files: "**/*.zip" 
+        files: "**/*.zip"
         generate_release_notes: true
 
   dotnet-publish:
     runs-on: ubuntu-latest
-    container: mcr.microsoft.com/dotnet/sdk:6.0
+    container: mcr.microsoft.com/dotnet/sdk:8.0
     needs: create-placeholder-release
     strategy:
       matrix:
@@ -54,11 +54,11 @@ jobs:
     - name: Set Version
       id: vars
       run: |
-        version=$(grep -Po '(?<=<VersionPrefix>)(.*?)(?=</VersionPrefix>)' $PROJECT_NAME/$PROJECT_NAME.csproj); 
+        version=$(grep -Po '(?<=<VersionPrefix>)(.*?)(?=</VersionPrefix>)' $PROJECT_NAME/$PROJECT_NAME.csproj);
         echo "version=$version" >> $GITHUB_OUTPUT;
     - run: apt-get update
     - run: apt-get install zip -y
-    - name: Publish 
+    - name: Publish
       run: >
         version=${{ steps.vars.outputs.version }}
 
@@ -66,11 +66,7 @@ jobs:
           --nologo \
           -o "publish/$PROJECT_NAME-$version-${{ matrix.runtime }}" \
           -c Release \
-          --runtime "${{ matrix.runtime }}" \
-          --self-contained true \
-          /p:PublishSingleFile=true \
-          /p:PublishReadyToRun=true \
-          /p:PublishTrimmed=true;
+          --runtime "${{ matrix.runtime }}";
 
         cd publish;
 
@@ -81,7 +77,7 @@ jobs:
     - name: Upload
       uses: actions/upload-artifact@v3
       with:
-        name: EpicPrefill-${{ steps.vars.outputs.version }}-${{ matrix.runtime }} 
+        name: EpicPrefill-${{ steps.vars.outputs.version }}-${{ matrix.runtime }}
         path: publish/
         if-no-files-found: error
     - name: Create Release
@@ -90,7 +86,7 @@ jobs:
       with:
         draft: true
         name: "v${{ steps.vars.outputs.version }}"
-        files: "**/*.zip" 
+        files: "**/*.zip"
         generate_release_notes: true
   docker-publish-x64:
     runs-on: ubuntu-latest
@@ -101,7 +97,7 @@ jobs:
     - name: Setup .NET
       uses: actions/setup-dotnet@v2
       with:
-        dotnet-version: 6.0.x
+        dotnet-version: 8.0.x
     - name: Publish
       run: >
         dotnet publish $PROJECT_NAME/$PROJECT_NAME.csproj \

@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <RuntimeIdentifiers>win-x64;linux-x64;linux-arm64;osx-x64</RuntimeIdentifiers>
     <OutputType>Exe</OutputType>
 
@@ -9,24 +9,39 @@
     <VersionPrefix>1.2.0</VersionPrefix>
     <Authors>tpill90</Authors>
 
-    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
-
     <!-- Code analysis settings -->
     <EnableNETAnalyzers>true</EnableNETAnalyzers>
     <Features>strict</Features>
     <AnalysisLevel>latest</AnalysisLevel>
     <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
     <AnalysisMode>AllEnabledByDefault</AnalysisMode>
+  </PropertyGroup>
 
+  <!-- Publish Settings -->
+  <PropertyGroup>
+    <PublishTrimmed>true</PublishTrimmed>
     <EnableTrimAnalyzer>true</EnableTrimAnalyzer>
+    <TrimmerSingleWarn>false</TrimmerSingleWarn>
+    <!-- Reverts back to the default trim mode used by dotnet 6, otherwise CliFx breaks without reflection -->
+    <TrimMode>partial</TrimMode>
+
+    <PublishSingleFile>true</PublishSingleFile>
 
     <!-- Required to be enabled in order to run this application on Ubuntu Docker images. -->
     <InvariantGlobalization>true</InvariantGlobalization>
+
+    <!-- Removes the git commit hash being appended to the version number when publishing..  Ex: v2.3.0+5afde434cfe8472ba36138c4912e7aa08a7a22d0 -->
+    <IncludeSourceRevisionInInformationalVersion>false</IncludeSourceRevisionInInformationalVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <DebugType>none</DebugType>
     <DebugSymbols>false</DebugSymbols>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <!-- Removes the full file system path from exception stack traces, only shows the file names now -->
+    <PathMap>$(MSBuildProjectDirectory)=$(MSBuildProjectName)</PathMap>
   </PropertyGroup>
 
   <!-- Includes Linux update script in publish package -->
@@ -84,10 +99,6 @@
     <!-- Required definitions in order for Microsoft.CodeAnalysis.BannedApiAnalyzers to work -->
     <AdditionalFiles Include="..\LancachePrefill.Common\BannedSymbols.txt" Link="Properties\BannedSymbols.txt" />
 
-    <PackageReference Include="Microsoft.CodeAnalysis.NetAnalyzers" Version="6.0.0">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Threading.Analyzers" Version="16.9.60">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
@@ -99,7 +110,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\LancachePrefill.Common\LancachePrefill.Common.csproj" />
+    <ProjectReference Include="..\LancachePrefill.Common\dotnet\LancachePrefill.Common.csproj" />
   </ItemGroup>
 
 </Project>

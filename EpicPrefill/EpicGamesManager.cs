@@ -62,7 +62,7 @@
                 {
                     await DownloadSingleAppAsync(app);
                 }
-                catch (Exception e) when (e is LancacheNotFoundException || e is UserCancelledException)
+                catch (Exception e) when (e is LancacheNotFoundException)
                 {
                     // We'll want to bomb out the entire process for these exceptions, as they mean we can't prefill any apps at all
                     throw;
