@@ -10,7 +10,7 @@ namespace EpicPrefill.CliCommands
 
 #if DEBUG // Development/debugging only
 
-        //TODO implement
+        //TODO remove
         [CommandOption("app", Description = "Debugging only.")]
         public List<string> AppIds { get; init; }
 
