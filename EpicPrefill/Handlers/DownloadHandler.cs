@@ -51,11 +51,12 @@
                 failedRequests = await AttemptDownloadAsync(ctx, "Downloading..", queuedRequests, new Uri(allManifestUrls.First().ManifestDownloadUrl));
 
                 // Handle any failed requests
-                while (failedRequests.Any() && retryCount < 3)
+                while (failedRequests.Any() && retryCount < 2)
                 {
                     retryCount++;
                     await Task.Delay(2000 * retryCount);
-                    failedRequests = await AttemptDownloadAsync(ctx, $"Retrying  {retryCount}..", failedRequests.ToList(), new Uri(allManifestUrls.First().ManifestDownloadUrl));
+                    var upstreamCdn = new Uri(allManifestUrls.First().ManifestDownloadUrl);
+                    failedRequests = await AttemptDownloadAsync(ctx, $"Retrying  {retryCount}..", failedRequests.ToList(), upstreamCdn, forceRecache: true);
                 }
             });
 
@@ -70,13 +71,15 @@
             return false;
         }
 
-
+        //TODO I don't like the number of parameters here, should maybe rethink the way this is written.
         /// <summary>
-        /// Attempts to download the specified requests.  Returns a list of any requests that have failed.
+        /// Attempts to download the specified requests.  Returns a list of any requests that have failed for any reason.
         /// </summary>
+        /// <param name="forceRecache">When specified, will cause the cache to delete the existing cached data for a request, and redownload it again.</param>
         /// <returns>A list of failed requests</returns>
         [SuppressMessage("Reliability", "CA2016:Forward the 'CancellationToken' parameter to methods", Justification = "Don't have a need to cancel")]
-        private async Task<ConcurrentBag<QueuedRequest>> AttemptDownloadAsync(ProgressContext ctx, string taskTitle, List<QueuedRequest> requestsToDownload, Uri upstreamCdn)
+        private async Task<ConcurrentBag<QueuedRequest>> AttemptDownloadAsync(ProgressContext ctx, string taskTitle, List<QueuedRequest> requestsToDownload,
+                                                                                Uri upstreamCdn, bool forceRecache = false)
         {
             double requestTotalSize = requestsToDownload.Sum(e => (long)e.DownloadSizeBytes);
             var progressTask = ctx.AddTask(taskTitle, new ProgressTaskSettings { MaxValue = requestTotalSize });
@@ -89,6 +92,10 @@
                 try
                 {
                     var url = Path.Join($"http://{_lancacheAddress}", chunk.DownloadUrl);
+                    if (forceRecache)
+                    {
+                        url += "?nocache=1";
+                    }
 
                     using var requestMessage = new HttpRequestMessage(HttpMethod.Get, url);
                     requestMessage.Headers.Host = upstreamCdn.Host;
@@ -102,9 +109,10 @@
                     {
                     }
                 }
-                catch
+                catch (Exception e)
                 {
                     failedRequests.Add(chunk);
+                    FileLogger.LogExceptionNoStackTrace($"Request {chunk.DownloadUrl}", e);
                 }
                 progressTask.Increment(chunk.DownloadSizeBytes);
             });
