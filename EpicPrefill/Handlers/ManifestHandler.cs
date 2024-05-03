@@ -49,7 +49,7 @@
 
         private bool ManifestIsCached(string manifestFileName)
         {
-            return !_downloadArguments.NoCache && File.Exists(manifestFileName);
+            return !AppConfig.NoLocalCache && File.Exists(manifestFileName);
         }
 
         //TODO document

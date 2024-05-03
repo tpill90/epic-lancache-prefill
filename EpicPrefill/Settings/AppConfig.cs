@@ -9,7 +9,6 @@ namespace EpicPrefill.Settings
             Directory.CreateDirectory(CacheDir);
         }
 
-
         /// <summary>
         /// Downloaded manifests, as well as other metadata, are saved into this directory to speedup future prefill runs.
         /// All data in here should be able to be deleted safely.
@@ -66,6 +65,11 @@ namespace EpicPrefill.Settings
 #if DEBUG
 
         public static bool SkipDownloads { get; set; }
+
+        /// <summary>
+        /// Skips using locally cached manifests. Saves disk space, at the expense of slower subsequent runs.  Intended for debugging.
+        /// </summary>
+        public static bool NoLocalCache { get; set; }
 
 #endif
     }

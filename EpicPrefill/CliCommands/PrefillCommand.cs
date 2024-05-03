@@ -14,12 +14,6 @@ namespace EpicPrefill.CliCommands
         [CommandOption("app", Description = "Debugging only.")]
         public List<string> AppIds { get; init; }
 
-        [CommandOption("no-download", Description = "Debugging only.", Converter = typeof(NullableBoolConverter))]
-        public bool? NoDownload
-        {
-            get => AppConfig.SkipDownloads;
-            init => AppConfig.SkipDownloads = value ?? default(bool);
-        }
 #endif
 
         #region Cli Args
@@ -33,12 +27,6 @@ namespace EpicPrefill.CliCommands
             Description = "Forces the prefill to always run, overrides the default behavior of only prefilling if a newer version is available.",
             Converter = typeof(NullableBoolConverter))]
         public bool? Force { get; init; }
-
-        //TODO implement
-        [CommandOption("nocache",
-            Description = "Skips using locally cached files. Saves disk space, at the expense of slower subsequent runs.",
-            Converter = typeof(NullableBoolConverter))]
-        public bool? NoLocalCache { get; init; }
 
         [CommandOption("verbose", Description = "Produces more detailed log output. Will output logs for games are already up to date.", Converter = typeof(NullableBoolConverter))]
         public bool? Verbose
@@ -74,7 +62,6 @@ namespace EpicPrefill.CliCommands
             var downloadArgs = new DownloadArguments
             {
                 Force = Force ?? default(bool),
-                NoCache = NoLocalCache ?? default(bool),
                 TransferSpeedUnit = TransferSpeedUnit
             };
 

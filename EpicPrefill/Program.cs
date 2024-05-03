@@ -62,9 +62,29 @@ namespace EpicPrefill
             // Have to skip the first argument, since its the path to the executable
             var args = Environment.GetCommandLineArgs().Skip(1).ToList();
 
-            if (args.Any(e => e.Contains("--debug")))
+            // Will skip over downloading logic.  Will only download manifests
+            if (args.Any(e => e.Contains("--no-download")))
             {
-                args.Remove("--debug");
+                AnsiConsole.Console.LogMarkupLine($"Using {LightYellow("--no-download")} flag.  Will skip downloading chunks...");
+                AppConfig.SkipDownloads = true;
+                args.Remove("--no-download");
+            }
+
+            // Skips using locally cached manifests. Saves disk space, at the expense of slower subsequent runs.
+            // Useful for debugging since the manifests will always be re-downloaded.
+            if (args.Any(e => e.Contains("--nocache")) || args.Any(e => e.Contains("--no-cache")))
+            {
+                AnsiConsole.Console.LogMarkupLine($"Using {LightYellow("--nocache")} flag.  Will always re-download manifests...");
+                AppConfig.NoLocalCache = true;
+                args.Remove("--nocache");
+                args.Remove("--no-cache");
+            }
+
+            // Adding some formatting to logging to make it more readable + clear that these flags are enabled
+            if (AppConfig.SkipDownloads || AppConfig.NoLocalCache)
+            {
+                AnsiConsole.Console.WriteLine();
+                AnsiConsole.Console.Write(new Rule());
             }
 
             return args;
