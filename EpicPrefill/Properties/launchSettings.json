@@ -6,7 +6,7 @@
     },
     "Prefill All": {
       "commandName": "Project",
-      "commandLineArgs": "prefill --all --verbose"
+      "commandLineArgs": "prefill --all --force --verbose"
     },
     "Prefill All - No Download": {
       "commandName": "Project",
