@@ -18,8 +18,7 @@
         [SuppressMessage("Microsoft.Security", "CA5350", Justification = "SHA1 is required by Epic")]
         public static byte[] ComputeSha1Hash(this byte[] input)
         {
-            using var sha = SHA1.Create();
-            return sha.ComputeHash(input);
+            return SHA1.HashData(input);
         }
 
         public static string ToHexString(this byte[] input)
@@ -47,7 +46,7 @@
 
                 // Read bytes representing string
                 var bytes = br.ReadBytes(stringLength - 2);
-                // Reading utf-16 two byte null terminators              
+                // Reading utf-16 two byte null terminators
                 br.ReadBytes(2);
 
                 return Encoding.Unicode.GetString(bytes);
@@ -58,7 +57,7 @@
             {
                 // Read bytes representing string
                 var bytes = br.ReadBytes(stringLength - 1);
-                // Read null delimiter 
+                // Read null delimiter
                 br.ReadBytes(1);
 
                 return Encoding.ASCII.GetString(bytes);

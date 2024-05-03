@@ -57,7 +57,7 @@
                     response.EnsureSuccessStatusCode();
 
                     using var responseStream = await response.Content.ReadAsStreamAsync();
-                    OauthToken = JsonSerializer.Deserialize(responseStream, SerializationContext.Default.OauthToken);
+                    OauthToken = await JsonSerializer.DeserializeAsync(responseStream, SerializationContext.Default.OauthToken);
 
                     Save();
                 }
