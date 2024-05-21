@@ -32,45 +32,5 @@
             return HexMate.Convert.ToHexString(input);
         }
 
-        //TODO document + rename
-        public static string ReadFstring(this BinaryReader br)
-        {
-            var stringLength = br.ReadInt32();
-
-            // If the length is negative the string is UTF-16 encoded
-            if (stringLength < 0)
-            {
-                // utf-16 chars are (generally) 2 bytes wide, but the length is # of characters, not bytes.
-                // 4-byte wide chars exist, but best I can tell Epic's (de)serializer doesn't support those.
-                stringLength *= -2;
-
-                // Read bytes representing string
-                var bytes = br.ReadBytes(stringLength - 2);
-                // Reading utf-16 two byte null terminators
-                br.ReadBytes(2);
-
-                return Encoding.Unicode.GetString(bytes);
-            }
-
-            // Handling ASCII
-            if (stringLength > 0)
-            {
-                // Read bytes representing string
-                var bytes = br.ReadBytes(stringLength - 1);
-                // Read null delimiter
-                br.ReadBytes(1);
-
-                return Encoding.ASCII.GetString(bytes);
-            }
-
-            return "";
-        }
-
-        //TODO document
-        public static void SkipReadingFstring(this BinaryReader br)
-        {
-            int stringLength = br.ReadInt32();
-            br.BaseStream.Seek(stringLength, SeekOrigin.Current);
-        }
     }
 }
