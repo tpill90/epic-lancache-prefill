@@ -2,7 +2,7 @@
 {
     //TODO document
     //TODO rename
-    public class GameAsset
+    public sealed class GameAsset
     {
         [JsonPropertyName("appName")]
         public string AppId { get; set; }
@@ -21,6 +21,10 @@
 
         public override string ToString()
         {
+            if (Title == null)
+            {
+                return $"{AppId} - {Namespace} - {CatalogItemId}";
+            }
             return Title;
         }
     }

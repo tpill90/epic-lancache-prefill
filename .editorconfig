@@ -1,7 +1,17 @@
+#TODO move this to lancache common
 root = true
 
 [*]
 end_of_line = lf
+
+[*.js]
+indent_style = tab
+tab_size = 4
+curly_bracket_next_line = true
+
+[*.py]
+indent_style = tab
+tab_size = 4
 
 # .NET formatting rules.  See https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/style-rules/formatting-rules
 # Resharper Rules. See https://www.jetbrains.com/help/resharper/EditorConfig_Index.html
@@ -23,12 +33,16 @@ space_between_attribute_sections = false
 
 # CA1002: Do not expose generic lists
 dotnet_diagnostic.CA1002.severity = none
+# CA1008: Enums should have zero value
+# - The enums in this case are modeling Steam enums, so I have to match them exactly.
+dotnet_diagnostic.CA1008.severity = none
 # CA1014: Mark assemblies with CLSCompliant
 dotnet_diagnostic.CA1014.severity = none
 # CA1031: Modify (method) to catch a more specific allowed exception type, or rethrow the exception
 dotnet_diagnostic.CA1031.severity = none
 # CA1034: Nested types should not be visible
 dotnet_diagnostic.CA1034.severity = none
+
 # CA1051: Do not declare visible instance fields
 dotnet_diagnostic.CA1051.severity = none
 # CA1054: URI parameters should not be strings
@@ -39,6 +53,7 @@ dotnet_diagnostic.CA1056.severity = none
 dotnet_diagnostic.CA1062.severity = none
 # CA1305: The behavior of 'int.Parse(string)' could vary based on the current user's locale settings.
 dotnet_diagnostic.CA1305.severity = none
+# CA1307: Specify StringComparison for clarity
 dotnet_diagnostic.CA1307.severity = none
 dotnet_diagnostic.CA1310.severity = none
 # CA1815: Override equals and operator equals on value types
@@ -64,11 +79,22 @@ dotnet_diagnostic.cs1998.severity = error
 # CS4014: Because this call is not awaited, execution of the current method continues before the call is completed
 dotnet_diagnostic.cs4014.severity = error
 
+# IDE0028: Simplify collection initialization
+# - Not a fan of the syntax, feels a little bit too terse
+dotnet_style_prefer_collection_expression = false
+
 # IDE0090 : 'new' expression can be simplified
 csharp_style_implicit_object_creation_when_type_is_apparent = false
+
+# IDE0290: Use primary constructor
+# - I'm a fan of this syntax in Typescript, but it still feels a bit too jarring seeing it C# now
+csharp_style_prefer_primary_constructors = false
+
 
 # Banned APIs will be bumped up to an error instead of warning
 dotnet_diagnostic.rs0030.severity = error
 
 # The method does not need to use async/await - Introduces annoying 'return' statements for async methods, that hurt code readability.
 dotnet_diagnostic.AsyncFixer01.severity = none
+
+
