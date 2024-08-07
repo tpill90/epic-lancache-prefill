@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="shortcut icon" href="../../img/favicon.ico" />
+    <title>Install Guide For Linux Beginners - epic-lancache-prefill wiki</title>
+    <link rel="stylesheet" href="../../css/theme.css" />
+    <link rel="stylesheet" href="../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+        <link href="../../css/extra.css" rel="stylesheet" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Install Guide For Linux Beginners";
+        var mkdocs_page_input_path = "install-guides/Install-Guide-For-Linux-Beginners.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../.." class="icon icon-home"> epic-lancache-prefill wiki
+        </a>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../..">Welcome</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../Detailed-Command-Usage/">Detailed Command Usage</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Install Guides</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../Docker-Setup-Guide/">Docker Setup Guide</a>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" href="#">Install Guide For Linux Beginners</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#installing-prerequisites">Installing Prerequisites</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#installing-epicprefill">Installing EpicPrefill</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#next-steps">Next Steps</a>
+    </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../Unraid-Setup-Guide/">Unraid Setup Guide</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Dev Guides</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../dev-guides/Compiling-from-source/">Compiling From Source</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../dev-guides/mkdocs-setup/">Working With Project Documentation</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Miscellaneous</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../miscellaneous/External-Links/">External Links</a>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../..">epic-lancache-prefill wiki</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../.." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">Install Guides</li>
+      <li class="breadcrumb-item active">Install Guide For Linux Beginners</li>
+    <li class="wy-breadcrumbs-aside">
+          <a href="https://github.com/tpill90/epic-lancache-prefill/edit/master/docs/install-guides/Install-Guide-For-Linux-Beginners.md" class="icon icon-github"> Edit on GitHub</a>
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="install-guide-for-linux-beginners">Install Guide For Linux Beginners<a class="headerlink" href="#install-guide-for-linux-beginners" title="Permanent link">&para;</a></h1>
+<p>This guide is written to help Linux beginners successfully download <strong>EpicPrefill</strong> on their Lancache caching server. </p>
+<h2 id="installing-prerequisites">Installing Prerequisites<a class="headerlink" href="#installing-prerequisites" title="Permanent link">&para;</a></h2>
+<p>Prior to installing <strong>EpicPrefill</strong> we will need to make sure that <code>curl</code>, <code>jq</code>, and <code>unzip</code> are already installed on our system.  Depending on your machine's configuration, this software may or may not already be installed.  Regardless, the following steps will ensure that everything needed is successfully installed.  </p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>These steps assume that you are using Ubuntu/Debian.  Depending on which Linux distro you are using, you may have to use slightly different commands.</p>
+</div>
+<p>To run the following commands, open up a new <strong>terminal</strong> session, and enter the following:</p>
+<pre><code class="language-bash"># Makes sure that the latest app versions will be installed
+apt-get update
+
+# Installs the required software
+apt-get install curl jq unzip wget -y
+</code></pre>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>You may run into a "Could not open lock file" error when running <code>apt-get install</code>, and will need to prefix the command with <code>sudo</code></p>
+</div>
+<p>Once the install command has finished successfully, we can move on to installing <strong>EpicPrefill</strong>.</p>
+<h2 id="installing-epicprefill">Installing EpicPrefill<a class="headerlink" href="#installing-epicprefill" title="Permanent link">&para;</a></h2>
+<p>We will be using a script to assist with installing <strong>EpicPrefill</strong> for the first time.  This will be helpful as it will save us from running several manual steps.</p>
+<p>To begin, open up a new terminal session.  We will want to create a new directory to install <strong>EpicPrefill</strong> into.  For example, to create the directory and to move into it, run"</p>
+<pre><code class="language-bash">mkdir EpicPrefill
+cd EpicPrefill/
+</code></pre>
+<p>After running the above commands successfully, you should see similar output in your terminal :</p>
+<p><img alt="create" src="../../images/install-guides/Create-SteamPrefill-Directory.png" style="width:430px" /></p>
+<p>We can now move on to downloading the <a href="https://github.com/tpill90/epic-lancache-prefill/blob/master/scripts/update.sh">install script</a> from the repo, and running it to install <strong>EpicPrefill</strong> </p>
+<pre><code class="language-bash"># Downloads the install script
+curl -o update.sh --location &quot;https://raw.githubusercontent.com/tpill90/epic-lancache-prefill/master/scripts/update.sh&quot;
+
+# Allows the install script to be executed
+chmod +x update.sh
+
+# Does the install!
+./update.sh
+
+# Allows EpicPrefill to be executed
+chmod +x ./EpicPrefill
+</code></pre>
+<p>If everything worked as expected, you should see output similar to below</p>
+<p><img alt="linux install" src="../../images/install-guides/Successful-Linux-Install.png" style="width:850px" /></p>
+<p><strong>EpicPrefill</strong> is now installed on your machine!  You can now run it with <code>./EpicPrefill</code></p>
+<h2 id="next-steps">Next Steps<a class="headerlink" href="#next-steps" title="Permanent link">&para;</a></h2>
+<p>If you are new to <strong>EpicPrefill</strong> and would like an introductory tutorial, see the <a href="https://github.com/tpill90/epic-lancache-prefill#getting-started">Getting Started</a> guide. </p>
+<p>Answers to common issues and questions can be found at <a href="https://github.com/tpill90/epic-lancache-prefill#frequently-asked-questions">Frequently Asked Questions</a>.  </p>
+<p>Alternatively, to see all of the features that <strong>EpicPrefill</strong> offers, take a look at <a href="https://tpill90.github.io/epic-lancache-prefill/Detailed-Command-Usage/">Detailed command usage</a></p>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../Docker-Setup-Guide/" class="btn btn-neutral float-left" title="Docker Setup Guide"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../Unraid-Setup-Guide/" class="btn btn-neutral float-right" title="Unraid Setup Guide">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+        <span>
+          <a href="https://github.com/tpill90/epic-lancache-prefill" class="fa fa-github" style="color: #fcfcfc"> GitHub</a>
+        </span>
+    
+    
+      <span><a href="../Docker-Setup-Guide/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../Unraid-Setup-Guide/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../..";</script>
+    <script src="../../js/theme_extra.js"></script>
+    <script src="../../js/theme.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>
