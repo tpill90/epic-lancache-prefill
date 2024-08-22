@@ -1,7 +1,7 @@
 ﻿namespace EpicPrefill.Handlers
 {
     // TODO document
-    public class EpicGamesApi
+    public sealed class EpicGamesApi
     {
         private readonly IAnsiConsole _ansiConsole;
         private readonly HttpClientFactory _httpClientFactory;
@@ -19,6 +19,7 @@
         }
 
         //TODO comment
+        //TODO this method has a few too many things going on here between the http request then the metadata population
         internal async Task<List<GameAsset>> GetOwnedAppsAsync()
         {
             //TODO this should probably be a status spinner
@@ -38,14 +39,21 @@
             using var responseContent = await response.Content.ReadAsStreamAsync();
             var ownedApps = await JsonSerializer.DeserializeAsync(responseContent, SerializationContext.Default.ListGameAsset);
 
-            var appMetadata = await LoadAppMetadataAsync(ownedApps);
-            foreach (var app in ownedApps)
+            // Removing anything related to unreal engine.  We're only interested in actual games
+            var filteredApps = ownedApps.Where(e => e.Namespace != "ue")
+                                                     // This namespace is related to unreal assets
+                                                     .Where(e => e.Namespace != "89efe5924d3d467c839449ab6ab52e7f")
+                                                     .ToList();
+
+            var appMetadata = await LoadAppMetadataAsync(filteredApps);
+            //TODO this part should probably be inside of the load app metadata part
+            foreach (var app in filteredApps)
             {
                 app.Title = appMetadata[app.AppId].title;
             }
 
-            _ansiConsole.LogMarkupLine($"Retrieved {Magenta(ownedApps.Count)} owned apps", timer);
-            return ownedApps;
+            _ansiConsole.LogMarkupLine($"Retrieved {Magenta(filteredApps.Count)} owned apps", timer);
+            return filteredApps.OrderBy(e => e.Title, StringComparer.OrdinalIgnoreCase).ToList();
         }
 
         //TODO comment
@@ -61,7 +69,9 @@
             }
 
             // Determine which apps don't already have their metadata loaded
-            var appsMissingMetadata = apps.Where(e => !metadataDictionary.ContainsKey(e.AppId)).ToList();
+            List<GameAsset> appsMissingMetadata = apps.Where(e => !metadataDictionary.ContainsKey(e.AppId))
+                                                      .OrderBy(e => e.AppId)
+                                                      .ToList();
 
             // If everything is cached, return
             if (!appsMissingMetadata.Any())
