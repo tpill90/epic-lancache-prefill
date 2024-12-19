@@ -8,7 +8,6 @@ namespace Benchmarks.Tests
     {
         private byte[] _rawManifestBytes;
         private ManifestUrl manifestDownloadUrl = new ManifestUrl();
-        private IAnsiConsole _ansiConsole = new TestConsole();
 
 
         public BinaryManifestParser()

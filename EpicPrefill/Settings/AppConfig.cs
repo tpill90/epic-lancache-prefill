@@ -13,7 +13,7 @@ namespace EpicPrefill.Settings
         /// Downloaded manifests, as well as other metadata, are saved into this directory to speedup future prefill runs.
         /// All data in here should be able to be deleted safely.
         /// </summary>
-        public static readonly string CacheDir = CacheDirUtils.GetCacheDirBaseDirectories("EpicPrefill", CacheDirVersion);
+        public static readonly string CacheDir = TempDirUtils.GetTempDirBaseDirectories("EpicPrefill", CacheDirVersion);
 
         /// <summary>
         /// Increment when there is a breaking change made to the files in the cache directory
