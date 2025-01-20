@@ -21,13 +21,14 @@ namespace EpicPrefill.Handlers
         }
 
         //TODO document allManifestUrls
+        //TODO why does the manifest url need to be passed in?
         /// <summary>
         /// Attempts to download all queued requests.  If all downloads are successful, will return true.
         /// In the case of any failed downloads, the failed downloads will be retried up to 3 times.  If the downloads fail 3 times, then
         /// false will be returned
         /// </summary>
         /// <returns>True if all downloads succeeded.  False if downloads failed 3 times.</returns>
-        public async Task<bool> DownloadQueuedChunksAsync(List<QueuedRequest> queuedRequests, List<ManifestUrl> allManifestUrls)
+        public async Task<bool> DownloadQueuedChunksAsync(List<QueuedRequest> queuedRequests, ManifestUrl manifestUrl)
         {
 #if DEBUG
             if (AppConfig.SkipDownloads)
@@ -37,7 +38,7 @@ namespace EpicPrefill.Handlers
 #endif
             if (_lancacheAddress == null)
             {
-                var cdnUrl = allManifestUrls.First().ManifestDownloadUri.Host;
+                var cdnUrl = manifestUrl.ManifestDownloadUri.Host;
                 _lancacheAddress = await LancacheIpResolver.ResolveLancacheIpAsync(_ansiConsole, cdnUrl);
             }
 
@@ -47,14 +48,14 @@ namespace EpicPrefill.Handlers
             {
                 //TODO should probably implement cycling through available CDNs when one fails
                 // Run the initial download
-                failedRequests = await AttemptDownloadAsync(ctx, "Downloading..", queuedRequests, new Uri(allManifestUrls.First().ManifestDownloadUrl));
+                failedRequests = await AttemptDownloadAsync(ctx, "Downloading..", queuedRequests, new Uri(manifestUrl.ManifestDownloadUrl));
 
                 // Handle any failed requests
                 while (failedRequests.Any() && retryCount < 2)
                 {
                     retryCount++;
                     await Task.Delay(2000 * retryCount);
-                    var upstreamCdn = new Uri(allManifestUrls.First().ManifestDownloadUrl);
+                    var upstreamCdn = new Uri(manifestUrl.ManifestDownloadUrl);
                     failedRequests = await AttemptDownloadAsync(ctx, $"Retrying  {retryCount}..", failedRequests.ToList(), upstreamCdn, forceRecache: true);
                 }
             });

@@ -10,11 +10,11 @@
     },
     "Prefill All - No Download": {
       "commandName": "Project",
-      "commandLineArgs": "prefill --all --no-download --force --verbose"
+      "commandLineArgs": "prefill --all --no-download --force --debug"
     },
     "Prefill All - No Download - No cache": {
       "commandName": "Project",
-      "commandLineArgs": "prefill --all --no-download --nocache --force --verbose"
+      "commandLineArgs": "prefill --all --no-download --nocache --force --debug"
     },
     "Prefill - App with DLC": {
       "commandName": "Project",
@@ -22,7 +22,7 @@
     },
     "Prefill - Fortnite": {
       "commandName": "Project",
-      "commandLineArgs": "prefill --app Fortnite --force --verbose"
+      "commandLineArgs": "prefill --app Fortnite --force --debug"
     },
     "Prefill - Json Manifest": {
       "commandName": "Project",
@@ -34,7 +34,7 @@
     },
     "Clear cache": {
       "commandName": "Project",
-      "commandLineArgs": "clear-cache"
+      "commandLineArgs": "clear-cache -y"
     }
   }
 }

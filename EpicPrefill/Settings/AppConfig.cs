@@ -7,6 +7,11 @@ namespace EpicPrefill.Settings
             // Create required folders
             Directory.CreateDirectory(ConfigDir);
             Directory.CreateDirectory(CacheDir);
+
+            // Debugging folders
+            Directory.CreateDirectory(DebugOutputDir);
+            Directory.CreateDirectory(MetadataOutputDir);
+            Directory.CreateDirectory(DownloadUrlPath);
         }
 
         /// <summary>
@@ -62,6 +67,29 @@ namespace EpicPrefill.Settings
 
         public static readonly string DefaultUserAgent = "EpicGamesLauncher/14.6.2-24350103+++Portal+Release-Live Windows/10.0.19044.1.256.64bit";
 
+        #region Debugging
+
+        public static readonly string DebugOutputDir = Path.Combine(CacheDir, "Debugging");
+        public static readonly string MetadataOutputDir = Path.Combine(DebugOutputDir, "App Metadata");
+        public static readonly string DownloadUrlPath = Path.Combine(DebugOutputDir, "Download URL");
+
+        private static bool _debugLogs;
+        public static bool DebugLogs
+        {
+            get => _debugLogs;
+            set
+            {
+                _debugLogs = value;
+
+                // Enable verbose logs as well
+                VerboseLogs = true;
+            }
+        }
+
+        /// <summary>
+        /// Will skip over downloading chunks, but will still download manifests and build the chunk download list.  Useful for testing
+        /// core logic of EpicPrefill without having to wait for downloads to finish.
+        /// </summary>
         public static bool SkipDownloads { get; set; }
 
         /// <summary>
@@ -69,5 +97,6 @@ namespace EpicPrefill.Settings
         /// </summary>
         public static bool NoLocalCache { get; set; }
 
+        #endregion
     }
 }

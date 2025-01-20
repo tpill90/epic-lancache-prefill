@@ -1,6 +1,4 @@
-﻿using NStack;
-
-namespace EpicPrefill.Models.ApiResponses
+﻿namespace EpicPrefill.Models.ApiResponses
 {
     //TODO document and figure out which fields arent needed
     public sealed class ManifestResponse
@@ -22,7 +20,7 @@ namespace EpicPrefill.Models.ApiResponses
         public Uri ManifestDownloadUri { get; set; }
 
         public string ManifestDownloadUrlWithParams => QueryHelpers.AddQueryString(ManifestDownloadUrl,
-            queryParams.ToDictionary(e => e.name, e => e.value));
+            queryParams.ToDictionary(e => e.Name, e => e.Value));
 
         private string _manifestDownloadUrl;
         /// <summary>
@@ -44,7 +42,7 @@ namespace EpicPrefill.Models.ApiResponses
 
         //TODO fix this warning.  Ignoring warning for the sake of releasing the app.  Build fails on warnings
         [SuppressMessage("Performance", "CA1819:Properties should not return arrays", Justification = "<Pending>")]
-        public Queryparam[] queryParams { get; set; }
+        public QueryParam[] queryParams { get; set; }
 
         //TODO comment.  I've got no idea what this does anymore
         private string _baseUri;
@@ -78,9 +76,12 @@ namespace EpicPrefill.Models.ApiResponses
         }
     }
 
-    public class Queryparam
+    public sealed class QueryParam
     {
-        public string name { get; set; }
-        public string value { get; set; }
+        [JsonPropertyName("name")]
+        public string Name { get; set; }
+
+        [JsonPropertyName("value")]
+        public string Value { get; set; }
     }
 }

@@ -85,7 +85,7 @@ namespace EpicPrefill.CliCommands
         private static async Task<List<TuiAppInfo>> BuildTuiAppModelsAsync(EpicGamesManager epicManager)
         {
             // Listing user's owned apps, and selected apps
-            var ownedApps = await epicManager.GetAllAvailableAppsAsync();
+            var ownedApps = await epicManager.GetAvailableGamesAsync();
             var previouslySelectedApps = epicManager.LoadPreviouslySelectedApps();
 
             // Building out Tui models

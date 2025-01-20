@@ -18,7 +18,7 @@
             }
         }
 
-        public void MarkDownloadAsSuccessful(GameAsset appInfo)
+        public void MarkDownloadAsSuccessful(AppInfo appInfo)
         {
             // Initialize the entry for the specified app
             if (!_previouslyDownloadedApps.ContainsKey(appInfo.AppId))
@@ -39,7 +39,7 @@
         /// <summary>
         /// An app will be considered up to date if it's current build version has been previously downloaded.
         /// </summary>
-        public bool AppIsUpToDate(GameAsset appInfo)
+        public bool AppIsUpToDate(AppInfo appInfo)
         {
             //TODO validate that the build version increments when a new version is released
             // If this version has never been downloaded at all, will always be false
