@@ -1,14 +1,16 @@
 ﻿namespace EpicPrefill.Models.ApiResponses
 {
-    public class AppMetadataResponse
+    public sealed class AppMetadataResponse
     {
-        public string id { get; set; }
-        public string title { get; set; }
-        public string description { get; set; }
+        [JsonPropertyName("id")]
+        public string CatalogItemId { get; set; }
+
+        [JsonPropertyName("title")]
+        public string Title { get; set; }
 
         public override string ToString()
         {
-            return title;
+            return Title;
         }
     }
 }

@@ -1,16 +1,19 @@
 ﻿namespace EpicPrefill.Handlers
 {
-    // TODO document
+    /// <summary>
+    /// This class is responsible for interacting with the Epic Games Online Services API.
+    /// The methods here are intended to query the API and return the data as is with no transformations,
+    /// however fields that are not needed by EpicPrefill will be omitted for the sake of simplicity.
+    /// </summary>
     public sealed class EpicGamesApi
     {
         private readonly IAnsiConsole _ansiConsole;
         private readonly HttpClientFactory _httpClientFactory;
 
-        private readonly string _launcherHost = "https://launcher-public-service-prod06.ol.epicgames.com";
-        private readonly string _catalogHost = "https://catalog-public-service-prod06.ol.epicgames.com";
-        private string _launcher_host = "https://launcher-public-service-prod06.ol.epicgames.com";
+        private const string LauncherHost = "https://launcher-public-service-prod06.ol.epicgames.com";
+        private const string CatalogHost = "https://catalog-public-service-prod06.ol.epicgames.com";
 
-        private string _metadataCachePath => Path.Combine(AppConfig.CacheDir, "metadataCache.json");
+        private string MetadataCachePath => Path.Combine(AppConfig.CacheDir, "metadataCache.json");
 
         public EpicGamesApi(IAnsiConsole ansiConsole, HttpClientFactory httpClientFactory)
         {
@@ -18,16 +21,18 @@
             _httpClientFactory = httpClientFactory;
         }
 
-        //TODO comment
-        //TODO this method has a few too many things going on here between the http request then the metadata population
-        internal async Task<List<GameAsset>> GetOwnedAppsAsync()
+        /// <summary>
+        /// Gets a list of all owned apps for the currently logged in account.
+        /// </summary>
+        /// <returns></returns>
+        internal async Task<List<Asset>> GetOwnedAppsAsync()
         {
-            //TODO this should probably be a status spinner
+            //TODO this should probably be inside a status spinner
             _ansiConsole.LogMarkupLine("Retrieving owned apps");
             var timer = Stopwatch.StartNew();
 
             // Build request
-            var requestUri = new Uri($"{_launcherHost}/launcher/api/public/assets/Windows?label=Live");
+            var requestUri = new Uri($"{LauncherHost}/launcher/api/public/assets/Windows?label=Live");
             using var request = new HttpRequestMessage(HttpMethod.Get, requestUri);
 
             // Send request
@@ -36,8 +41,14 @@
             response.EnsureSuccessStatusCode();
 
             // Read and deserialize
-            using var responseContent = await response.Content.ReadAsStreamAsync();
-            var ownedApps = await JsonSerializer.DeserializeAsync(responseContent, SerializationContext.Default.ListGameAsset);
+            var responseContent = await response.Content.ReadAsStringAsync();
+            var ownedApps = JsonSerializer.Deserialize(responseContent, SerializationContext.Default.ListAsset);
+
+            // Dumping out the raw json if -debug is enabled
+            if (AppConfig.DebugLogs)
+            {
+                await File.WriteAllTextAsync($@"{AppConfig.DebugOutputDir}\assetsResponse.json", responseContent);
+            }
 
             // Removing anything related to unreal engine.  We're only interested in actual games
             var filteredApps = ownedApps.Where(e => e.Namespace != "ue")
@@ -45,31 +56,30 @@
                                                      .Where(e => e.Namespace != "89efe5924d3d467c839449ab6ab52e7f")
                                                      .ToList();
 
-            var appMetadata = await LoadAppMetadataAsync(filteredApps);
-            //TODO this part should probably be inside of the load app metadata part
-            foreach (var app in filteredApps)
-            {
-                app.Title = appMetadata[app.AppId].title;
-            }
-
             _ansiConsole.LogMarkupLine($"Retrieved {Magenta(filteredApps.Count)} owned apps", timer);
-            return filteredApps.OrderBy(e => e.Title, StringComparer.OrdinalIgnoreCase).ToList();
+            return filteredApps;
         }
 
-        //TODO comment
-        private async Task<Dictionary<string, AppMetadataResponse>> LoadAppMetadataAsync(List<GameAsset> apps)
+        /// <summary>
+        /// Gets additional metadata for the list of apps passed in.  The majority of this metadata isn't important to our use case, however we primarily need
+        /// to get this metadata in order to know the apps titles.
+        ///
+        /// If the metadata has already been loaded before then a cached copy will be returned from disk.  If any of the apps are new and have not had their
+        /// metadata loaded already then they will be requested and cached for future use.
+        /// </summary>
+        public async Task<Dictionary<string, AppMetadataResponse>> LoadAppMetadataAsync(List<Asset> apps)
         {
             var metadataDictionary = new Dictionary<string, AppMetadataResponse>();
 
             // Load cache from disk, if it exists
-            if (File.Exists(_metadataCachePath))
+            if (File.Exists(MetadataCachePath))
             {
-                var allText = await File.ReadAllTextAsync(_metadataCachePath);
+                var allText = await File.ReadAllTextAsync(MetadataCachePath);
                 metadataDictionary = JsonSerializer.Deserialize(allText, SerializationContext.Default.DictionaryStringAppMetadataResponse);
             }
 
             // Determine which apps don't already have their metadata loaded
-            List<GameAsset> appsMissingMetadata = apps.Where(e => !metadataDictionary.ContainsKey(e.AppId))
+            List<Asset> appsMissingMetadata = apps.Where(e => !metadataDictionary.ContainsKey(e.AppId))
                                                       .OrderBy(e => e.AppId)
                                                       .ToList();
 
@@ -95,19 +105,21 @@
 
             // Serialize new metadata
             var serialized = JsonSerializer.Serialize(metadataDictionary, SerializationContext.Default.DictionaryStringAppMetadataResponse);
-            await File.WriteAllTextAsync(_metadataCachePath, serialized);
+            await File.WriteAllTextAsync(MetadataCachePath, serialized);
 
             return metadataDictionary;
         }
 
-        //TODO comment
-        private async Task<AppMetadataResponse> GetSingleAppMetadataAsync(GameAsset appInfo)
+        /// <summary>
+        /// Gets additional metadata about a single app from Epic's API.  The only real thing that we are really interested in here is the app's title.
+        /// </summary>
+        private async Task<AppMetadataResponse> GetSingleAppMetadataAsync(Asset app)
         {
             // Building request
-            var baseUrl = $"{_catalogHost}/catalog/api/shared/namespace/{appInfo.Namespace}/bulk/items";
+            var baseUrl = $"{CatalogHost}/catalog/api/shared/namespace/{app.Namespace}/bulk/items";
             var requestParams = new Dictionary<string, string>
             {
-                { "id", appInfo.CatalogItemId },
+                { "id", app.CatalogItemId },
                 { "includeDLCDetails", "true" },
                 { "includeMainGameDetails", "True" },
                 { "country", "US" },
@@ -121,33 +133,41 @@
             using var response = await httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead);
             response.EnsureSuccessStatusCode();
 
-            using var responseStream = await response.Content.ReadAsStreamAsync();
-            var appMetadata = await JsonSerializer.DeserializeAsync(responseStream, SerializationContext.Default.DictionaryStringAppMetadataResponse);
+            var responseContent = await response.Content.ReadAsStringAsync();
+            var appMetadata = JsonSerializer.Deserialize(responseContent, SerializationContext.Default.DictionaryStringAppMetadataResponse);
+
+            // Dumping out the raw json if -debug is enabled
+            if (AppConfig.DebugLogs)
+            {
+                await File.WriteAllTextAsync($@"{AppConfig.MetadataOutputDir}\{app.AppId}.json", responseContent);
+            }
 
             return appMetadata.Values.First();
         }
 
         //TODO comment
-        public async Task<List<ManifestUrl>> GetAllDownloadUrlsAsync(GameAsset appInfo)
+        public async Task<ManifestUrl> GetManifestDownloadUrlAsync(AppInfo app)
         {
-            var url = $"{_launcher_host}/launcher/api/public/assets/v2/platform/Windows/namespace/{appInfo.Namespace}/" +
-                      $"catalogItem/{appInfo.CatalogItemId}/app/{appInfo.AppId}/label/Live";
+            var url = $"{LauncherHost}/launcher/api/public/assets/v2/platform/Windows/namespace/{app.Namespace}/" +
+                            $"catalogItem/{app.CatalogItemId}/app/{app.AppId}/label/Live";
 
             using var requestMessage = new HttpRequestMessage(HttpMethod.Get, new Uri(url));
             using var httpClient = await _httpClientFactory.GetHttpClientAsync();
             using var response = await httpClient.SendAsync(requestMessage, HttpCompletionOption.ResponseHeadersRead);
             response.EnsureSuccessStatusCode();
 
-            using var responseStream = await response.Content.ReadAsStreamAsync();
-            ManifestResponse deserialized = await JsonSerializer.DeserializeAsync(responseStream, SerializationContext.Default.ManifestResponse);
+            var responseContent = await response.Content.ReadAsStringAsync();
+            ManifestResponse deserialized = JsonSerializer.Deserialize(responseContent, SerializationContext.Default.ManifestResponse);
 
-            return deserialized.elements.First().manifests.ToList();
-        }
+            // Dumping out the raw json if -debug is enabled
+            if (AppConfig.DebugLogs)
+            {
+                await File.WriteAllTextAsync($@"{AppConfig.DownloadUrlPath}\{app.AppId}.json", responseContent);
+            }
 
-        public ManifestUrl GetManifestDownloadUrl(List<ManifestUrl> allManifestUrls)
-        {
-            //TODO document why this is
-            return allManifestUrls.First(e => e.queryParams.Any(e2 => e2.name == "f_token"));
+            var allManifests = deserialized.elements.First().manifests.ToList();
+            //TODO document why this is.  I don't remember exactly why it needs to be the one that has this query param.
+            return allManifests.First(e => e.queryParams.Any(e2 => e2.Name == "f_token"));
         }
     }
 }

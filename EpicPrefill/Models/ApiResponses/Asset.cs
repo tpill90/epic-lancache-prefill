@@ -1,8 +1,7 @@
 ﻿namespace EpicPrefill.Models.ApiResponses
 {
     //TODO document
-    //TODO rename
-    public sealed class GameAsset
+    public sealed class Asset
     {
         [JsonPropertyName("appName")]
         public string AppId { get; set; }
@@ -16,16 +15,9 @@
         [JsonPropertyName("namespace")]
         public string Namespace { get; set; }
 
-        [JsonIgnore]
-        public string Title { get; set; }
-
         public override string ToString()
         {
-            if (Title == null)
-            {
-                return $"{AppId} - {Namespace} - {CatalogItemId}";
-            }
-            return Title;
+            return $"{AppId} - {Namespace} - {CatalogItemId}";
         }
     }
 }

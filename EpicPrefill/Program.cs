@@ -53,14 +53,22 @@ namespace EpicPrefill
             return 0;
         }
 
-        //TODO determine if this is useful
         /// <summary>
         /// Adds hidden flags that may be useful for debugging/development, but shouldn't be displayed to users in the help text
         /// </summary>
         private static List<string> ParseHiddenFlags()
         {
-            // Have to skip the first argument, since its the path to the executable
+            // Have to skip the first argument, since it is the path to the executable
             var args = Environment.GetCommandLineArgs().Skip(1).ToList();
+
+            // Enables debugging + verbose logs
+            if (args.Any(e => e.Contains("--debug")))
+            {
+                AnsiConsole.Console.LogMarkupLine($"Using {LightYellow("--debug")} flag.  Displaying debug only logging...");
+                AnsiConsole.Console.LogMarkupLine($"Additional debugging files will be output to {Magenta(AppConfig.DebugOutputDir)}");
+                AppConfig.DebugLogs = true;
+                args.Remove("--debug");
+            }
 
             // Will skip over downloading logic.  Will only download manifests
             if (args.Any(e => e.Contains("--no-download")))
@@ -81,7 +89,7 @@ namespace EpicPrefill
             }
 
             // Adding some formatting to logging to make it more readable + clear that these flags are enabled
-            if (AppConfig.SkipDownloads || AppConfig.NoLocalCache)
+            if (AppConfig.DebugLogs || AppConfig.SkipDownloads || AppConfig.NoLocalCache)
             {
                 AnsiConsole.Console.WriteLine();
                 AnsiConsole.Console.Write(new Rule());

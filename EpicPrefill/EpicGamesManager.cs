@@ -9,11 +9,11 @@
         private readonly DownloadArguments _downloadArgs;
 
         private readonly DownloadHandler _downloadHandler;
-        private EpicGamesApi _epicApi;
+        private readonly EpicGamesApi _epicApi;
         private readonly AppInfoHandler _appInfoHandler;
-        private ManifestHandler _manifestHandler;
+        private readonly ManifestHandler _manifestHandler;
         private readonly UserAccountManager _userAccountManager;
-        private HttpClientFactory _httpClientFactory;
+        private readonly HttpClientFactory _httpClientFactory;
 
         private readonly PrefillSummaryResult _prefillSummaryResult = new PrefillSummaryResult();
 
@@ -32,7 +32,7 @@
             _manifestHandler = new ManifestHandler(_ansiConsole, _httpClientFactory, _downloadArgs);
         }
 
-        //TODO document
+        //TODO inline this method
         public async Task InitializeAsync()
         {
             await _userAccountManager.LoginAsync();
@@ -40,7 +40,7 @@
 
         public async Task DownloadMultipleAppsAsync(bool downloadAllOwnedGames, List<string> manualIds = null)
         {
-            List<GameAsset> allOwnedGames = await GetAllAvailableAppsAsync();
+            var allOwnedGames = await GetAvailableGamesAsync();
 
             var appIdsToDownload = LoadPreviouslySelectedApps();
             if (manualIds != null)
@@ -80,7 +80,7 @@
             _prefillSummaryResult.RenderSummaryTable(_ansiConsole);
         }
 
-        private async Task DownloadSingleAppAsync(GameAsset app)
+        private async Task DownloadSingleAppAsync(AppInfo app)
         {
             // Only download the app if it isn't up to date
             if (_downloadArgs.Force == false && _appInfoHandler.AppIsUpToDate(app))
@@ -90,10 +90,10 @@
             }
 
             _ansiConsole.LogMarkupLine($"Starting {Cyan(app.Title)}");
+            _ansiConsole.LogMarkupVerbose($"Downloading version : {LightGreen(app.BuildVersion)}");
 
             // Download the latest manifest, and build the list of requests in order to download the app
-            List<ManifestUrl> allManifestUrls = await _epicApi.GetAllDownloadUrlsAsync(app);
-            ManifestUrl manifestDownloadUrl = _epicApi.GetManifestDownloadUrl(allManifestUrls);
+            ManifestUrl manifestDownloadUrl = await _epicApi.GetManifestDownloadUrlAsync(app);
             var rawManifestBytes = await _manifestHandler.DownloadManifestAsync(app, manifestDownloadUrl);
             var chunkDownloadQueue = _manifestHandler.ParseManifest(rawManifestBytes, manifestDownloadUrl);
 
@@ -102,11 +102,10 @@
             var totalBytes = ByteSize.FromBytes(chunkDownloadQueue.Sum(e => (long)e.DownloadSizeBytes));
             _prefillSummaryResult.TotalBytesTransferred += totalBytes;
 
-            var verboseChunkCount = AppConfig.VerboseLogs ? $"from {LightYellow(chunkDownloadQueue.Count)} chunks" : "";
-            _ansiConsole.LogMarkupLine($"Downloading {Magenta(totalBytes.ToDecimalString())} {verboseChunkCount}");
+            _ansiConsole.LogMarkupVerbose($"Downloading {Magenta(totalBytes.ToDecimalString())} from {LightYellow(chunkDownloadQueue.Count)} chunks");
 
             // Finally run the queued downloads
-            var downloadSuccessful = await _downloadHandler.DownloadQueuedChunksAsync(chunkDownloadQueue, allManifestUrls);
+            var downloadSuccessful = await _downloadHandler.DownloadQueuedChunksAsync(chunkDownloadQueue, manifestDownloadUrl);
             if (downloadSuccessful)
             {
                 // Logging some metrics about the download
@@ -122,10 +121,27 @@
             }
         }
 
-        //TODO should this just be merged with GetOwnedAppsAsync?
-        public async Task<List<GameAsset>> GetAllAvailableAppsAsync()
+        //TODO comment
+        public async Task<List<AppInfo>> GetAvailableGamesAsync()
         {
-            return await _epicApi.GetOwnedAppsAsync();
+            var ownedAssets = await _epicApi.GetOwnedAppsAsync();
+            var appMetadata = await _epicApi.LoadAppMetadataAsync(ownedAssets);
+
+            var ownedApps = new List<AppInfo>();
+            foreach (Asset asset in ownedAssets)
+            {
+                var app = new AppInfo
+                {
+                    AppId = asset.AppId,
+                    BuildVersion = asset.BuildVersion,
+                    CatalogItemId = asset.CatalogItemId,
+                    Namespace = asset.Namespace,
+                    Title = appMetadata[asset.AppId].Title
+                };
+                ownedApps.Add(app);
+            }
+
+            return ownedApps.OrderBy(e => e.Title, StringComparer.OrdinalIgnoreCase).ToList();
         }
 
         #region Select Apps

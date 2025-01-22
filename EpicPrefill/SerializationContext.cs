@@ -3,7 +3,7 @@
     [JsonSourceGenerationOptions(GenerationMode = JsonSourceGenerationMode.Metadata, WriteIndented = true)]
     [JsonSerializable(typeof(ManifestResponse))]
     [JsonSerializable(typeof(OauthToken))]
-    [JsonSerializable(typeof(List<GameAsset>))]
+    [JsonSerializable(typeof(List<Asset>))]
     [JsonSerializable(typeof(List<string>))]
     [JsonSerializable(typeof(Dictionary<string, AppMetadataResponse>))]
     [JsonSerializable(typeof(JsonManifest))]

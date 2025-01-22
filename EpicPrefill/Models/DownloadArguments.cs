@@ -11,8 +11,5 @@
         /// Determines which unit to display the download speed in.
         /// </summary>
         public TransferSpeedUnit TransferSpeedUnit { get; set; } = TransferSpeedUnit.Bits;
-
-        //TODO comment + implement.  Should maybe not be in the app config?
-        public int MaxConcurrentRequests { get; set; } = 30;
     }
 }

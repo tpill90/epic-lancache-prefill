@@ -18,11 +18,9 @@ namespace EpicPrefill.CliCommands
 
         #region Cli Args
 
-        //TODO implement
         [CommandOption("all", Description = "Prefills all currently owned games", Converter = typeof(NullableBoolConverter))]
         public bool? DownloadAllOwnedGames { get; init; }
 
-        //TODO implement
         [CommandOption("force", 'f',
             Description = "Forces the prefill to always run, overrides the default behavior of only prefilling if a newer version is available.",
             Converter = typeof(NullableBoolConverter))]
@@ -32,7 +30,7 @@ namespace EpicPrefill.CliCommands
         public bool? Verbose
         {
             get => AppConfig.VerboseLogs;
-            init => AppConfig.VerboseLogs = value ?? default(bool);
+            init => AppConfig.VerboseLogs = value ?? false;
         }
 
         [CommandOption("unit",
@@ -61,7 +59,7 @@ namespace EpicPrefill.CliCommands
 
             var downloadArgs = new DownloadArguments
             {
-                Force = Force ?? default(bool),
+                Force = Force ?? false,
                 TransferSpeedUnit = TransferSpeedUnit
             };
 
@@ -73,7 +71,7 @@ namespace EpicPrefill.CliCommands
 #if DEBUG
             manualIds = AppIds;
 #endif
-            await epicGamesManager.DownloadMultipleAppsAsync(DownloadAllOwnedGames ?? default(bool), manualIds);
+            await epicGamesManager.DownloadMultipleAppsAsync(DownloadAllOwnedGames ?? false, manualIds);
         }
     }
 }

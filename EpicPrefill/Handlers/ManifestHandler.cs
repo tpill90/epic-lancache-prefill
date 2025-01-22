@@ -2,24 +2,22 @@
 {
     public sealed class ManifestHandler
     {
+        //TODO move the manifests into a subfolder in the cache dir
         private readonly IAnsiConsole _ansiConsole;
         private readonly HttpClientFactory _httpClientFactory;
-        private readonly DownloadArguments _downloadArguments;
 
         public ManifestHandler(IAnsiConsole ansiConsole, HttpClientFactory httpClientFactory, DownloadArguments downloadArguments)
         {
             _ansiConsole = ansiConsole;
             _httpClientFactory = httpClientFactory;
-            _downloadArguments = downloadArguments;
         }
 
         /// <summary>
         /// Downloads the latest manifest for the specified app.
         /// Only downloads the raw response, doesn't do any further processing.
-        /// To parse the manifest into a useable form, "/>
         /// </summary>
         /// <returns>The raw bytes for the downloaded manifest</returns>
-        public async Task<byte[]> DownloadManifestAsync(GameAsset appInfo, ManifestUrl manifestDownloadUrl)
+        public async Task<byte[]> DownloadManifestAsync(AppInfo appInfo, ManifestUrl manifestDownloadUrl)
         {
             // Load from disk if manifest already exists
             var cachedFileName = Path.Combine(AppConfig.CacheDir, $"{appInfo.AppId}-{appInfo.BuildVersion}");
