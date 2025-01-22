@@ -1,10 +1,42 @@
 site_name: epic-lancache-prefill wiki
-repo_url: https://github.com/tpill90/epic-lancache-prefill
 docs_dir: mkdocs
+repo_url: https://github.com/tpill90/epic-lancache-prefill
+site_url: https://tpill90.github.io/epic-lancache-prefill
+
 extra_css:
-  - css/extra.css
+  - assets/external/asciinema-player.css
+  - assets/language-picker.css
+  - assets/copy-to-clipboard.css
+  - assets/extra.css
+  # Overrides the default hljs theme, gives better coloring of things like comments
+  - assets/syntax-style-overrides.css
+extra_javascript:
+  - assets/external/asciinema-player.min.js
+  - assets/external/clipboard.min.js
+  - assets/external/popper.min.js
+  - assets/external/tippy-bundle.umd.min.js
+  - assets/copy-to-clipboard.js
+  - assets/extra.js
+
+# Defines global variables that can be used by templates
+extra:
+  prefill_name: EpicPrefill
+  gaming_service_name: Epic
+  repo_name: epic-lancache-prefill
+
 theme:
   name: readthedocs
+  # Customized header (removes Edit on Github link) and customized footer (removes Built with mkdocs text)
+  # For the defaults see : https://github.com/mkdocs/mkdocs/tree/master/mkdocs/themes/readthedocs
+  custom_dir: mkdocs/custom_theme/
+  # Examples of themes - https://highlightjs.org/demo
+  # Find which themes are available on the cdn - https://cdnjs.com/libraries/highlight.js
+  hljs_style: default
+  hljs_languages:
+    - bash
+    - ini
+    - powershell
+
 markdown_extensions:
   - admonition
   - attr_list
@@ -15,15 +47,45 @@ markdown_extensions:
   - toc:
       permalink: True
   - tables
+
+# https://github.com/mkdocs/catalog
 plugins:
+  # Fails the build if any of the external or internal links 404
+  # See for more info : https://github.com/manuzhang/mkdocs-htmlproofer-plugin
+  # TODO reenable this, I'm tired of looking at it today
+  # - htmlproofer:
+  #     enabled: !ENV [ENABLED_HTMLPROOFER, False]
+  #     validate_external_urls: True
+  #     raise_error: True
+  #     ignore_urls:
+  #       - https://waveform.com/tools/bufferbloat/*
+
+  # https://github.com/lukasgeiter/mkdocs-awesome-pages-plugin
   - awesome-pages:
       strict: true
+  # https://github.com/ultrabug/mkdocs-static-i18n
+  # Icons taken from - https://github.com/lipis/flag-icons
+  - i18n:
+      default_language: en
+      docs_structure: suffix
+      languages:
+        en:
+          name: English
+          build: true
+        gr:
+          name: Ελληνικά
+          build: true
+  # Allows global variables - https://github.com/fralau/mkdocs_macros_plugin
+  - macros
+
 nav:
   - Welcome: index.md
-  - Detailed Command Usage: Detailed-Command-Usage.md 
-  - Install Guides: 
-    - ... | flat | install-guides/*.md
-  - Dev Guides: 
-    - ... | flat | dev-guides/*.md
-  - Miscellaneous: 
-    - ... | flat | miscellaneous/*.md
+  - Frequently Asked Questions: faq.md
+  - Install Guides:
+      - ... | flat | install-guides/*.md
+  - Detailed Command Usage:
+      - ... | flat | detailed-command-usage/*.md
+  - Dev Guides:
+      - ... | flat | dev-guides/*.md
+  - Miscellaneous:
+      - ... | flat | miscellaneous/*.md

@@ -8,12 +8,12 @@ assignees: ''
 ---
 
 **Describe the bug**
--  A clear and detailed description of what the bug is.  
+-  A clear and detailed description of what the bug is.
 -  Describe what steps you've taken to troubleshoot the issue.
 -  Explain what your expected behavior of the app is.  What is the difference between what it is currently doing, and what you think it should be doing.
 
 **Additional Details**
- - Platform you are running SteamPrefill on:  [e.g Windows, Linux, Docker, Ich777's Unraid App]
+ - Platform you are running EpicPrefill on:  [e.g Windows, Linux, Docker, Ich777's Unraid App]
  - Discord Username (if you are part of the Lancache Discord Server) : [e.g username#0000]
 
 **Screenshots**

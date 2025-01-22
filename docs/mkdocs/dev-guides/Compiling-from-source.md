@@ -2,28 +2,39 @@
 
 ## Installing Prerequisites
 
-Only the .NET 6 SDK is required to compile the project.  This can be installed through one of the following methods
+Only the .NET 8 SDK is required to compile the project.  The following instructions will be using Chocolatey as a package manager for Windows, which makes installing software much easier as it can be done by a single command.  Chocolatey can be installed using the [Chocolatey install guide](https://chocolatey.org/install#individual) if it isn't already installed.
 
-### Using Chocolatey
-```powershell
-choco install dotnet-6.0-sdk
-# Needs to be removed, in order to resolve issue with Nuget being preconfigured wrong.  
-# Will auto-regenerate on first run.
-Remove-Item "C:\Users\$Env:USERNAME\AppData\Roaming\NuGet\nuget.config"
-```
-
-### Manually
-The latest .NET 6.0 SDK can be found here  [.NET 6.0 SDK - Windows x64 Installer]( https://download.visualstudio.microsoft.com/download/pr/deb4711b-7bbc-4afa-8884-9f2b964797f2/fb603c451b2a6e0a2cb5372d33ed68b9/dotnet-sdk-6.0.300-win-x64.exe )
-
-## Cloning the repo and submodules
+### dotnet SDK
 
 ```powershell
-git clone --recurse-submodules -j8 https://github.com/tpill90/epic-lancache-prefill.git
+choco install dotnet-sdk --version=8.0.100
 ```
-If you've already cloned the repository without the submodules, use this command to include the submodules:
+
+### Git
+
+Additionally, if Git has not already been installed it can be installed using the following:
+
+```powershell
+choco install git.install
+```
+
+-----
+
+## Cloning the repository
+
+Prior to doing any work on the project a copy of the code must first be cloned from Github.  The following will clone the repo as well as all of the required submodules:
+
+```powershell
+git clone --recurse-submodules -j8 https://github.com/tpill90/{{repo_name}}.git
+```
+
+
+Alternatively if you've already cloned the repository without the submodules, use this command to include the submodules:
 ```
 git submodule update --init --recursive
 ```
+
+-----
 
 ## Compiling
 
@@ -33,17 +44,19 @@ The project can be compiled by running the following in the repository root (the
 dotnet build
 ```
 
+-----
+
 ## Running the project
 
 !!! note
-    These steps assume that the working directory is `/EpicPrefill`.  All commands assume that they can find `EpicPrefill.csproj` in the working dir.
+    These steps assume that the working directory is `/{{prefill_name}}`.  All commands assume that they can find `{{prefill_name}}.csproj` in the working dir.
 
 Typically, for development you will want to run the project in `Debug` mode.  This mode will run dramatically slower than `Release`, however it will leave useful debugging information in the compiled assembly.  Running the following will detect and compile any changes, and then execute the project:
 ```powershell
 dotnet run
 ```
 
-The above is analogous to running `./EpicPrefill.exe` without any parameters.  To instead supply parameters :
+The above is analogous to running `./{{prefill_name}}.exe` without any parameters.  To instead supply parameters :
 ```powershell
 dotnet run -- prefill --all
 ```
@@ -53,9 +66,17 @@ Alternatively, to run the project at full speed with all compilation optimizatio
 dotnet run --configuration Release
 ```
 
-## Executing Unit Tests
+-----
+
+## Running Unit Tests
 
 To compile and run all tests in the entire repo, run the following command:
 ```powershell
 dotnet test
 ```
+
+-----
+
+## Where should I get started in the codebase?
+
+A good place to start poking around the project would be the [CliCommands folder](https://github.com/tpill90/{{repo_name}}/tree/master/{{prefill_name}}/CliCommands).  This folder contains the implementations for each of the individual commands that can be run, such as `prefill` or `select-apps`.  

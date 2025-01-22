@@ -11,3 +11,4 @@ lockfile
 *.user
 EpicPrefill/Properties/PublishProfiles/FolderProfile.pubxml
 /Benchmarks/BenchmarkDotNet.Artifacts/results
+/docs/RenderAnsiToSvg/__pycache__/*.pyc

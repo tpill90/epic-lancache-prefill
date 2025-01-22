@@ -39,7 +39,7 @@ space_between_attribute_sections = false
 # CA1002: Do not expose generic lists
 dotnet_diagnostic.CA1002.severity = none
 # CA1008: Enums should have zero value
-# - The enums in this case are modeling Steam enums, so I have to match them exactly.
+# - The enums in this case are modeling enums, so I have to match them exactly.
 dotnet_diagnostic.CA1008.severity = none
 # CA1014: Mark assemblies with CLSCompliant
 dotnet_diagnostic.CA1014.severity = none
