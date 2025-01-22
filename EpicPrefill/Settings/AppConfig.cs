@@ -6,7 +6,7 @@ namespace EpicPrefill.Settings
         {
             // Create required folders
             Directory.CreateDirectory(ConfigDir);
-            Directory.CreateDirectory(CacheDir);
+            Directory.CreateDirectory(TempDir);
 
             // Debugging folders
             Directory.CreateDirectory(DebugOutputDir);
@@ -18,12 +18,12 @@ namespace EpicPrefill.Settings
         /// Downloaded manifests, as well as other metadata, are saved into this directory to speedup future prefill runs.
         /// All data in here should be able to be deleted safely.
         /// </summary>
-        public static readonly string CacheDir = TempDirUtils.GetTempDirBaseDirectories("EpicPrefill", CacheDirVersion);
+        public static readonly string TempDir = TempDirUtils.GetTempDirBaseDirectories("EpicPrefill", TempDirVersion);
 
         /// <summary>
         /// Increment when there is a breaking change made to the files in the cache directory
         /// </summary>
-        private const string CacheDirVersion = "v1";
+        private const string TempDirVersion = "v1";
 
         /// <summary>
         /// Contains user configuration.  Should not be deleted, doing so will reset the app back to defaults.
@@ -69,7 +69,7 @@ namespace EpicPrefill.Settings
 
         #region Debugging
 
-        public static readonly string DebugOutputDir = Path.Combine(CacheDir, "Debugging");
+        public static readonly string DebugOutputDir = Path.Combine(TempDir, "Debugging");
         public static readonly string MetadataOutputDir = Path.Combine(DebugOutputDir, "App Metadata");
         public static readonly string DownloadUrlPath = Path.Combine(DebugOutputDir, "Download URL");
 

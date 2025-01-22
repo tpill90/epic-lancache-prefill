@@ -13,7 +13,7 @@
         private const string LauncherHost = "https://launcher-public-service-prod06.ol.epicgames.com";
         private const string CatalogHost = "https://catalog-public-service-prod06.ol.epicgames.com";
 
-        private string MetadataCachePath => Path.Combine(AppConfig.CacheDir, "metadataCache.json");
+        private string MetadataCachePath => Path.Combine(AppConfig.TempDir, "metadataCache.json");
 
         public EpicGamesApi(IAnsiConsole ansiConsole, HttpClientFactory httpClientFactory)
         {

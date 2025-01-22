@@ -34,7 +34,7 @@
     },
     "Clear cache": {
       "commandName": "Project",
-      "commandLineArgs": "clear-cache -y"
+      "commandLineArgs": "clear-temp -y"
     }
   }
 }
