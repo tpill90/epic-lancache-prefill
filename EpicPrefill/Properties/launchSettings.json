@@ -2,19 +2,11 @@
   "profiles": {
     "Prefill Selected": {
       "commandName": "Project",
-      "commandLineArgs": "prefill --force --verbose"
+      "commandLineArgs": "prefill --force --verbose --no-cache "
     },
     "Prefill All": {
       "commandName": "Project",
-      "commandLineArgs": "prefill --all --force --verbose"
-    },
-    "Prefill All - No Download": {
-      "commandName": "Project",
-      "commandLineArgs": "prefill --all --no-download --force --debug"
-    },
-    "Prefill All - No Download - No cache": {
-      "commandName": "Project",
-      "commandLineArgs": "prefill --all --no-download --nocache --force --debug"
+      "commandLineArgs": "prefill --all --force --verbose --no-cache --no-download"
     },
     "Prefill - App with DLC": {
       "commandName": "Project",
@@ -22,7 +14,7 @@
     },
     "Prefill - Fortnite": {
       "commandName": "Project",
-      "commandLineArgs": "prefill --app Fortnite --force --debug"
+      "commandLineArgs": "prefill --app Fortnite --verbose --force --no-cache --no-download"
     },
     "Prefill - Json Manifest": {
       "commandName": "Project",

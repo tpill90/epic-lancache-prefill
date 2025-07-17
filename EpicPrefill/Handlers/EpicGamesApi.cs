@@ -156,6 +156,11 @@
             using var response = await httpClient.SendAsync(requestMessage, HttpCompletionOption.ResponseHeadersRead);
             response.EnsureSuccessStatusCode();
 
+            if (response.Headers.TryGetValues("Set-Cookie", out var cookieHeaders))
+            {
+                _ansiConsole.LogMarkupVerbose($"Making request {LightYellow(url)}.  {LightGreen("Response contains a cookie!")}");
+            }
+
             var responseContent = await response.Content.ReadAsStringAsync();
             ManifestResponse deserialized = JsonSerializer.Deserialize(responseContent, SerializationContext.Default.ManifestResponse);
 
@@ -166,8 +171,7 @@
             }
 
             var allManifests = deserialized.elements.First().manifests.ToList();
-            //TODO document why this is.  I don't remember exactly why it needs to be the one that has this query param.
-            return allManifests.First(e => e.queryParams.Any(e2 => e2.Name == "f_token"));
+            return allManifests.First(e => e.queryParams.Any(e2 => e2.Name == "cfl_token"));
         }
     }
 }

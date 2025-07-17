@@ -103,6 +103,16 @@ namespace EpicPrefill.Handlers
                     using Stream responseStream = await response.Content.ReadAsStreamAsync(cts.Token);
                     response.EnsureSuccessStatusCode();
 
+                    var headers = response.Headers.ToList();
+                    if (response.Headers.TryGetValues("Set-Cookie", out var cookieHeaders))
+                    {
+                        Debugger.Break();
+                        foreach (var cookieHeader in cookieHeaders)
+                        {
+                            // Optionally, parse them using CookieParser logic or a library
+                        }
+                    }
+
                     // Don't save the data anywhere, so we don't have to waste time writing it to disk.
                     var buffer = new byte[4096];
                     while (await responseStream.ReadAsync(buffer, cts.Token) != 0)

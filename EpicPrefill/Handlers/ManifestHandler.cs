@@ -36,6 +36,11 @@
                 using var response = await httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead);
                 response.EnsureSuccessStatusCode();
 
+                if (response.Headers.TryGetValues("Set-Cookie", out var cookieHeaders))
+                {
+                    _ansiConsole.LogMarkupVerbose($"Making request {LightYellow(manifestDownloadUrl.ManifestDownloadUrlWithParams)}.  {LightGreen("Response contains a cookie!")}");
+                }
+
                 responseAsBytes = await response.Content.ReadAsByteArrayAsync();
                 // Cache to disk
                 await File.WriteAllBytesAsync(cachedFileName, responseAsBytes);

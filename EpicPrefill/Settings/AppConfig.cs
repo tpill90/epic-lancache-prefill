@@ -65,7 +65,7 @@ namespace EpicPrefill.Settings
 
         #endregion
 
-        public static readonly string DefaultUserAgent = "EpicGamesLauncher/14.6.2-24350103+++Portal+Release-Live Windows/10.0.19044.1.256.64bit";
+        public static readonly string DefaultUserAgent = "EpicGamesLauncher/18.7.0-43544223+++Portal+Release-Live Windows/10.0.19045.1.256.64bit";
 
         #region Debugging
 
