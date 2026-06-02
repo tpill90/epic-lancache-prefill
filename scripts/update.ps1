@@ -6,9 +6,23 @@ $versionApi = "https://api.github.com/repos/tpill90/epic-lancache-prefill/releas
 $versions = Invoke-RestMethod -Uri $versionApi
 
 # Finding latest asset
-$windowsAsset = $versions[0].assets | Where-Object { $_.name.Contains("win-x64")}
+$windowsAsset = $versions[0].assets | Where-Object { $_.name.Contains("win-x64") }
+$latestVersion = $versions[0].name
 Write-Host "Found latest version : " -NoNewline
-Write-Host -ForegroundColor Cyan $windowsAsset.name
+Write-Host -ForegroundColor Cyan $latestVersion
+
+# Seeing if EpicPrefill is already installed and up to date
+if (Test-Path "EpicPrefill.exe")
+{
+    $currentVersion = (.\EpicPrefill.exe --version)
+    $upToDate = $currentVersion -eq $latestVersion
+
+    if ($upToDate)
+    {
+        Write-Host "Already up to date !" -ForegroundColor Yellow
+        return
+    }
+}
 
 # Downloading
 Write-Host -ForegroundColor Yellow "Downloading..."
@@ -19,7 +33,7 @@ Write-Host -ForegroundColor Yellow "Unzipping..."
 Expand-Archive -Force $windowsAsset.name -DestinationPath .
 Copy-Item "$($windowsAsset.name.Replace('.zip', ''))\EpicPrefill.exe"
 
-# Cleanup 
+# Cleanup
 Remove-Item $windowsAsset.name
 Remove-Item -Force -Recurse "$($windowsAsset.name.Replace('.zip', ''))"
 
