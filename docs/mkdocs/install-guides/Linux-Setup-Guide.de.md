@@ -4,7 +4,7 @@
 
 Vor der Installation von **{{prefill_name}}** müssen die Pakete `curl`, `jq` und `unzip` auf dem System installiert sein. Abhängig von der Konfiguration des Systems, könnten diese Pakete bereits installiert sein. Trotzdem stellen die folgenden Schritte sicher, dass alles nötige erfolgreich instaliert wurde.
 
-!!! Note
+!!! Hinweis
     Diese Schritte gehen von einem Ubuntu/Debian System aus. Abhängig davon welche Linux Distribution du verwendest, musst du die Befehle ggf. leicht an dein System anpassen.
 
 Um die folgenden Befehle auszuführen, öffne eine neue **Konsole** und gib die folgenden Befehle ein:
@@ -18,17 +18,17 @@ apt-get install curl jq unzip wget -y
 ```
 
 !!! Warning
-    Beim ausführen von `apt-get install ` kkönnte ein "Could not open lock file" Fehler auftreten. In dem Falle füge einfach `sudo` vorne an den Befehl an.
+    Beim ausführen von `apt-get install` könnte ein "Could not open lock file" Fehler auftreten. In dem Falle füge einfach `sudo` vorne an den Befehl an.
 
 Sobald alle Pakete erfolgreich installiert wurden, können wir mit der Installation von **{{prefill_name}}** fortfahren.
 
------
+---
 
 ## {{prefill_name}} installieren
 
-Wir werden ein Script zur Unterstützung bei der Installation von **{{prefill_name}}** nutzen, das ersparte uns mehrere manuelle Schritte.
+Wir werden ein Script zur Unterstützung bei der Installation von **{{prefill_name}}** nutzen, das erspart uns mehrere manuelle Schritte.
 
-Um anzufangen, öffne eine neue Konsole. Wir wollen einen neuen Ordner erstellen, in welchem wir anschließen **{{prefill_name}}** installieren können. Um beispielsweise einen neuen Ordner zu erstellen und dort hinein zu navigieren, füre die folgenden Befehle aus:
+Um anzufangen, öffne eine neue Konsole. Wir wollen einen neuen Ordner erstellen, in welchem wir anschließen **{{prefill_name}}** installieren können. Um einen neuen Ordner zu erstellen und dort hinein zu navigieren, füre die folgenden Befehle aus:
 
 ``` bash
 mkdir {{prefill_name}}
@@ -64,7 +64,7 @@ Wenn alles wie erwartet funktioniert, solltest du in deiner Konsole eine Ausgabe
 
 **{{prefill_name}}** ist nun erfolgreich auf deinem System installiert! Du kannst es mit `./{{prefill_name}}` ausführen.
 
------
+---
 
 ## Nächste Schritte
 

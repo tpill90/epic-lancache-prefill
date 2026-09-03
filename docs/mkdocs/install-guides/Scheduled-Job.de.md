@@ -1,24 +1,24 @@
 # Einen Nightly Job einrichten
 
-!!! Note
+!!! Hinweis
     Diese Anleitung geht davon aus dass du **{{prefill_name}}** bereits auf deinem System installiert hast. Solltest du das noch nicht getan haben, schaue dir die [Linux Installationsanleitung](../Linux-Setup-Guide) an.
 
 ## Zeitplan einrichten
 
-Zuerst müssen wir einen `timer` konfigurieren, welcher den Zeitplan einrichten nach dem **{{prefill_name}}** ausgeführt werden wird. In diesem Beispiel richten wir einen Zeitplan ein welcher nightly um 04:00 Uhr lokaler Zeit ausführt.
+Zuerst müssen wir einen `timer` konfigurieren, welcher den Zeitplan einrichtet, nach dem **{{prefill_name}}** ausgeführt werden soll. In diesem Beispiel richten wir einen Zeitplan ein, welcher nächtlich um 04:00 Uhr lokaler Zeit ausgeführt wird.
 
-Du solltest eine neue Datei namens `/etc/systemd/system/{{prefill_name.lower()}}.timer` mit der folgenden Konfiguration erstellen und speichern:
+Erstelle eine neue Datei namens `/etc/systemd/system/{{prefill_name.lower()}}.timer` mit der folgenden Konfiguration und speichere sie:
 
 ```ini
 [Unit]
-Description={{prefill_name}} tägliche Ausführung
+Description={{prefill_name}} nächtliche Ausführung
 Requires={{prefill_name.lower()}}.service
 
 [Timer]
 # Wird jeden Tag um 04:00 Uhr lokaler Zeit ausgeführt.
 OnCalendar=*-*-* 4:00:00
 
-# Auf true setzen um zu speichern wann der Job zuletzt ausgeführt wurde.
+# Auf true setzen um zu speichern, wann der Job zuletzt ausgeführt wurde.
 Persistent=true
 
 [Install]
@@ -31,8 +31,8 @@ WantedBy=timers.target
 
 Als nächstes konfigurieren wir den Job, der täglich von dem zuvor eingerichteten `timer` aus dem vorheringen Schritt ausgeführt wird. Erstelle eine neue Datei `/etc/systemd/system/{{prefill_name.lower()}}.service` mit dem folgenden Inhalt und speichere sie:
 
-!!! Note
-    Die Werte für `User`, `WorkingDirectory` und `ExecStart` müssen so ausgeführt werden, dass sie auf deinen **{{prefill_name}}** Installationsort verweisen.
+!!! Hinweis
+    Die Werte für `User`, `WorkingDirectory` und `ExecStart` müssen so eingerichtet werden, dass sie auf deinen **{{prefill_name}}** Installationsort verweisen.
 
 ```ini
 [Unit]
@@ -67,7 +67,7 @@ sudo systemctl enable --now {{prefill_name.lower()}}.timer
 sudo systemctl enable {{prefill_name.lower()}}
 ```
 
-Wenn alles korrekt konfiguriert wurde, solltest du eine Ausgabe ähnlich wie die folgende sehen, wenn du den Befehl `sudo systemctl status {{prefill_name.lower()}},timer` ausführst:
+Wenn alles korrekt konfiguriert wurde, solltest du eine Ausgabe ähnlich wie die folgende sehen, wenn du den Befehl `sudo systemctl status {{prefill_name.lower()}}.timer` ausführst:
 
 <div data-cli-player="../casts/systemd-timer-status.cast" data-rows=8></div>
 <br>
