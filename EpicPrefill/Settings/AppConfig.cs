@@ -30,8 +30,10 @@ namespace EpicPrefill.Settings
         /// </summary>
         public static readonly string ConfigDir = Path.Combine(AppContext.BaseDirectory, "Config");
 
-        //TODO comment
-        public static int MaxConcurrentRequests => 30;
+        /// <summary>
+        /// Upper limit on download requests in flight at once.  Set with --max-threads on the prefill command.
+        /// </summary>
+        public static int MaxConcurrentRequests { get; set; } = 30;
 
         //TODO comment
         private static bool _verboseLogs;
